@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS MPT Daily Quiz</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+            color: #2C3E50;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 1rem;
+            margin: auto;
+        }
+
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-accent {
+            background: linear-gradient(to right, #E6E6FA, #FFDAB9);
+            color: #2C3E50;
+            font-weight: bold;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .btn-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .option-card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border: 1px solid #FFF5EE; /* Section Divider color */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .option-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-card.correct {
+            background-color: #90EE90; /* Light Green */
+            animation: pulse-green 0.5s ease-in-out;
+        }
+
+        .option-card.wrong {
+            background-color: #FF6B6B; /* Red */
+            animation: shake-red 0.3s ease-in-out;
+        }
+
+        @keyframes pulse-green {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake-red {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            height: 1rem;
+            margin-top: 1rem;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #20B2AA, #3EB489);
+            border-radius: 0.5rem;
+            transition: width 0.4s ease-in-out;
+        }
+
+        .sticky-date {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: #F8F9FA; /* Match body background */
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #FFF5EE;
+            display: flex;
+            justify-content: flex-end; /* Desktop: top-right */
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .sticky-date {
+                justify-content: flex-start; /* Mobile: top-left */
+            }
+        }
+
+        /* Prevent selection, right-click, and common dev tools shortcuts */
+        body {
+            -webkit-user-select: none;  /* Safari */
+            -moz-user-select: none;     /* Firefox */
+            -ms-user-select: none;      /* IE 10+ */
+            user-select: none;          /* Standard */
+        }
+
+        /* Golden border for special question */
+        .special-question-border {
+            border: 3px solid #FFD700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Custom modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            text-align: center;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="customAlertModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('customAlertModal')">&times;</span>
+            <p id="customAlertMessage" class="text-lg font-semibold"></p>
+            <button class="btn-accent mt-4" onclick="closeModal('customAlertModal')">OK</button>
+        </div>
+    </div>
+
+    <div id="loginScreen" class="min-h-screen flex items-center justify-center bg-gray-100">
+        <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md text-center">
+            <h2 class="text-3xl font-bold mb-6 text-[#2C3E50]">CSS MPT Quiz Login</h2>
+            <div class="mb-4">
+                <input type="text" id="loginId" placeholder="ID" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3EB489]">
+            </div>
+            <div class="mb-6">
+                <input type="password" id="loginPassword" placeholder="Password" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3EB489]">
+            </div>
+            <button id="loginButton" class="btn-accent w-full py-3 text-lg">Login</button>
+        </div>
+    </div>
+
+    <div id="nameInputScreen" class="min-h-screen flex items-center justify-center bg-gray-100 hidden">
+        <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md text-center">
+            <h2 class="text-3xl font-bold mb-6 text-[#2C3E50]">Enter Your Details</h2>
+            <div class="mb-4">
+                <input type="text" id="candidateName" placeholder="Full Name" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3EB489]">
+            </div>
+            <button id="startQuizButton" class="btn-accent w-full py-3 text-lg">Start Quiz</button>
+        </div>
+    </div>
+
+    <div id="quizScreen" class="container mx-auto p-4 hidden">
+        <div class="sticky-date text-[#6D6875] text-sm md:text-base">
+            <i class="far fa-calendar-alt mr-2"></i> <span id="liveDate"></span>
+        </div>
+
+        <header class="text-center py-4">
+            <h1 class="text-3xl md:text-4xl font-bold text-[#2C3E50] mb-2 font-sans">
+                CSS MPT Daily Quiz – <span id="quizDateTitle"></span>
+            </h1>
+            <div class="progress-bar-container">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <p id="progressText" class="text-sm text-gray-600 mt-1"></p>
+        </header>
+
+        <div class="my-4 rounded-xl overflow-hidden shadow-md">
+            <img src="https://i.ibb.co/tMYHtj6n/480709804-2211254089269599-2819007219717277160-n.jpg" alt="Quiz Banner" class="w-full h-auto object-cover rounded-xl">
+        </div>
+
+        <div class="text-center mb-6 text-[#2C3E50]">
+            <p class="font-bold text-lg">DAWNDIGEST</p>
+            <p class="text-sm">PREPARED BY: SYED ASGHAR ALI SHAH</p>
+            <p class="text-sm">Contact: 03265762698</p>
+            <p class="text-xs text-gray-500 mt-2">Updated on: <span id="updatedDate"></span></p>
+        </div>
+
+        <div class="h-2 bg-[#FFF5EE] rounded-full my-6"></div>
+
+        <div id="quizContent" class="grid grid-cols-1 md:grid-cols-1 gap-4">
+            <div id="questionCard" class="card">
+                <p class="text-lg font-semibold mb-4" id="questionText"></p>
+                <div id="optionsContainer" class="grid grid-cols-1 gap-3">
+                    </div>
+                <div id="feedback" class="mt-4 text-center font-bold hidden"></div>
+                <div id="explanation" class="mt-4 p-3 bg-[#FFF5EE] rounded-lg hidden">
+                    <p class="font-semibold">Explanation:</p>
+                    <p id="explanationText" class="text-sm"></p>
+                </div>
+            </div>
+
+            <div class="flex justify-between mt-6">
+                <button id="prevButton" class="btn-accent px-6 py-2" disabled><i class="fas fa-arrow-left mr-2"></i> Previous</button>
+                <button id="nextButton" class="btn-accent px-6 py-2">Next <i class="fas fa-arrow-right ml-2"></i></button>
+            </div>
+
+            <div class="text-center mt-4 text-xl font-bold text-[#2C3E50]">
+                Time Left: <span id="timer">40:00</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="resultsScreen" class="min-h-screen flex items-center justify-center bg-gray-100 hidden">
+        <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md text-center">
+            <h2 class="text-3xl font-bold mb-6 text-[#2C3E50]">Quiz Results</h2>
+            <p class="text-lg mb-2">Candidate Name: <span id="resultCandidateName" class="font-semibold"></span></p>
+            <p class="text-lg mb-2">Score: <span id="resultScore" class="font-semibold"></span> / 100</p>
+            <p class="text-lg mb-2">Time Taken: <span id="resultTimeTaken" class="font-semibold"></span></p>
+            <p class="text-lg mb-4">Questions Attempted: <span id="resultAttempted" class="font-semibold"></span></p>
+            <button id="retakeQuizButton" class="btn-accent w-full py-3 text-lg">Retake Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Security Measures ---
+        // Disable right-click
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // Disable copy/paste
+        document.addEventListener('copy', event => {
+            event.preventDefault();
+            showCustomAlert('Copying is disabled for security reasons.');
+        });
+        document.addEventListener('cut', event => {
+            event.preventDefault();
+            showCustomAlert('Cutting is disabled for security reasons.');
+        });
+        document.addEventListener('paste', event => {
+            event.preventDefault();
+            showCustomAlert('Pasting is disabled for security reasons.');
+        });
+
+        // Disable specific keyboard shortcuts (Ctrl+U, Ctrl+Shift+I, F12)
+        document.addEventListener('keydown', event => {
+            if (
+                (event.ctrlKey && event.key === 'u') || // Ctrl+U
+                (event.ctrlKey && event.shiftKey && event.key === 'i') || // Ctrl+Shift+I
+                (event.key === 'F12') // F12
+            ) {
+                event.preventDefault();
+                showCustomAlert('Developer tools shortcuts are disabled for security reasons.');
+            }
+        });
+
+        // --- Custom Alert Modal Functions ---
+        function showCustomAlert(message) {
+            const modal = document.getElementById('customAlertModal');
+            const msgElement = document.getElementById('customAlertMessage');
+            msgElement.textContent = message;
+            modal.style.display = 'flex'; // Use flex to center content
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // --- Quiz Data (MCQs) ---
+        // MCQs are categorized by difficulty to ensure the required distribution.
+        // Explanations are simplified and direct.
+        const quizData = [
+            // General Knowledge (GK) - Pages 25-27 (World Geography: Oceans, Seas, Islands, Gulfs & Bays, Straits)
+            // 10 Easy, 50 Medium, 40 Tough - will adjust during generation
+            // Easy GK (3)
+            {
+                id: 'gk1',
+                question: "Which of the following is the largest island in the world?",
+                options: ["Greenland", "New Guinea", "Borneo", "Madagascar"],
+                answer: "Greenland",
+                explanation: "Greenland is the world's largest island, located between the Arctic and Atlantic Oceans.",
+                difficulty: "easy",
+                category: "GK"
+            },
+            {
+                id: 'gk2',
+                question: "What is a group of islands often called?",
+                options: ["Peninsula", "Archipelago", "Isthmus", "Strait"],
+                answer: "Archipelago",
+                explanation: "An archipelago is a group of islands, or a body of water containing a scattered group of islands.",
+                difficulty: "easy",
+                category: "GK"
+            },
+            {
+                id: 'gk3',
+                question: "The Strait of Gibraltar connects the Atlantic Ocean to which sea?",
+                options: ["Mediterranean Sea", "Black Sea", "Red Sea", "Caspian Sea"],
+                answer: "Mediterranean Sea",
+                explanation: "The Strait of Gibraltar is a narrow strait that connects the Atlantic Ocean to the Mediterranean Sea and separates Gibraltar and Peninsular Spain in Europe from Morocco in Africa.",
+                difficulty: "easy",
+                category: "GK"
+            },
+            // Medium GK (18)
+            {
+                id: 'gk4',
+                question: "Which sea is known for having no coastline, being entirely surrounded by ocean currents?",
+                options: ["Mediterranean Sea", "Sargasso Sea", "Baltic Sea", "Red Sea"],
+                answer: "Sargasso Sea",
+                explanation: "The Sargasso Sea is a region of the Atlantic Ocean bounded by ocean currents rather than by land, making it unique for its lack of a coastline.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk5',
+                question: "Which of these is the deepest sea in the world?",
+                options: ["Caribbean Sea", "Mediterranean Sea", "South China Sea", "Bering Sea"],
+                answer: "Caribbean Sea",
+                explanation: "The Caribbean Sea is considered the deepest sea, with its deepest point being the Cayman Trough.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk6',
+                question: "Which two countries are separated by the Palk Strait?",
+                options: ["India and Pakistan", "India and Sri Lanka", "Bangladesh and Myanmar", "Malaysia and Indonesia"],
+                answer: "India and Sri Lanka",
+                explanation: "The Palk Strait is a strait between the Tamil Nadu state of India and the Jaffna District of the Northern Province of the island nation of Sri Lanka.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk7',
+                question: "The Bering Strait connects the Pacific Ocean to which other ocean?",
+                options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Southern Ocean"],
+                answer: "Arctic Ocean",
+                explanation: "The Bering Strait is a strait of the Pacific Ocean that separates Russia and the United States, connecting the Pacific to the Arctic Ocean.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk8',
+                question: "Which gulf is famous for containing a significant portion of the world's proven oil and natural gas reserves?",
+                options: ["Gulf of Mexico", "Persian Gulf", "Gulf of Guinea", "Gulf of Aden"],
+                answer: "Persian Gulf",
+                explanation: "The Persian Gulf is a vital body of water in Southwest Asia, known for its vast oil and natural gas reserves.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk9',
+                question: "The Bay of Pigs is a famous bay located in which country?",
+                options: ["Cuba", "Mexico", "USA", "Venezuela"],
+                answer: "Cuba",
+                explanation: "The Bay of Pigs is an inlet of the Gulf of Cazones on the southern coast of Cuba, known for the 1961 invasion attempt.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk10',
+                question: "Which strait separates the Malay Peninsula and the island of Sumatra?",
+                options: ["Strait of Hormuz", "Strait of Malacca", "Strait of Magellan", "Strait of Dover"],
+                answer: "Strait of Malacca",
+                explanation: "The Strait of Malacca is a narrow stretch of water, 805 km (500 mi) in length, between the Malay Peninsula and the Indonesian island of Sumatra.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk11',
+                question: "The Bosporus Strait is located in which country, connecting the Black Sea to the Sea of Marmara?",
+                options: ["Greece", "Turkey", "Bulgaria", "Romania"],
+                answer: "Turkey",
+                explanation: "The Bosporus Strait is a natural strait and an internationally significant waterway located in northwestern Turkey.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk12',
+                question: "Which sea is bordered by Europe, Asia, and Africa, and is known for its historical significance?",
+                options: ["Red Sea", "Baltic Sea", "Mediterranean Sea", "Black Sea"],
+                answer: "Mediterranean Sea",
+                explanation: "The Mediterranean Sea is almost completely enclosed by land: on the north by Southern Europe and Anatolia, on the south by North Africa, and on the east by the Levant.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk13',
+                question: "The Gulf of Guinea is a large gulf on the Atlantic coast of which continent?",
+                options: ["Asia", "Africa", "South America", "Europe"],
+                answer: "Africa",
+                explanation: "The Gulf of Guinea is a large gulf off the coast of West Africa.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk14',
+                question: "Which of the following is the shallowest sea in the world?",
+                options: ["Red Sea", "Baltic Sea", "Hudson Bay", "Arabian Sea"],
+                answer: "Hudson Bay",
+                explanation: "Hudson Bay, a large body of saltwater in northeastern Canada, is considered one of the shallowest seas.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk15',
+                question: "The Strait of Hormuz is a strategically important strait between which two countries?",
+                options: ["Iran and Iraq", "Iran and Oman", "Saudi Arabia and Yemen", "Qatar and UAE"],
+                answer: "Iran and Oman",
+                explanation: "The Strait of Hormuz is a narrow, strategically important waterway between the Persian Gulf and the Gulf of Oman, separating Iran from Oman and the UAE.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk16',
+                question: "Which island nation is located in the Indian Ocean, east of Africa?",
+                options: ["Sri Lanka", "Madagascar", "Philippines", "Japan"],
+                answer: "Madagascar",
+                explanation: "Madagascar is a large island nation off the southeast coast of Africa in the Indian Ocean.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk17',
+                question: "The Strait of Dover separates Great Britain from which European country?",
+                options: ["France", "Belgium", "Netherlands", "Germany"],
+                answer: "France",
+                explanation: "The Strait of Dover is the narrowest part of the English Channel, separating Great Britain from continental Europe, specifically France.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk18',
+                question: "Which sea is an inland sea located between Eastern Europe and Western Asia, known for its vast size?",
+                options: ["Black Sea", "Caspian Sea", "Aral Sea", "Mediterranean Sea"],
+                answer: "Caspian Sea",
+                explanation: "The Caspian Sea is the world's largest inland body of water, variously classed as the world's largest lake or a full-fledged sea.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk19',
+                question: "Which of the following is a major gulf located off the coast of Mexico?",
+                options: ["Gulf of Alaska", "Gulf of California", "Gulf of Mexico", "Gulf of St. Lawrence"],
+                answer: "Gulf of Mexico",
+                explanation: "The Gulf of Mexico is an ocean basin and a marginal sea of the Atlantic Ocean, largely surrounded by the North American continent.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk20',
+                question: "Bali, a popular tourist destination, is an island belonging to which country?",
+                options: ["Thailand", "Indonesia", "Malaysia", "Philippines"],
+                answer: "Indonesia",
+                explanation: "Bali is an Indonesian island known for its volcanic mountains, coral reefs, beaches and spiritual sites.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            {
+                id: 'gk21',
+                question: "The Red Sea is an inlet of the Indian Ocean, located between Africa and which other continent?",
+                options: ["Europe", "Asia", "Australia", "South America"],
+                answer: "Asia",
+                explanation: "The Red Sea is a seawater inlet of the Indian Ocean, lying between Africa and Asia.",
+                difficulty: "medium",
+                category: "GK"
+            },
+            // Tough GK (13)
+            {
+                id: 'gk22',
+                question: "The Strait of Bab-el-Mandeb connects the Red Sea to which body of water?",
+                options: ["Persian Gulf", "Gulf of Aden", "Arabian Sea", "Indian Ocean"],
+                answer: "Gulf of Aden",
+                explanation: "The Bab-el-Mandeb is a strait between Yemen on the Arabian Peninsula, Djibouti and Eritrea on the Horn of Africa, connecting the Red Sea to the Gulf of Aden.",
+                difficulty: "tough",
+                category: "GK"
+            },
+            {
+                id: 'gk23',
+                question: "Which of the following seas is unique for being a remnant of the ancient Tethys Ocean?",
+                options: ["Black Sea", "Caspian Sea", "Mediterranean Sea", "Aral Sea"],
+                answer: "Mediterranean Sea",
+                explanation: "The Mediterranean Sea is considered a remnant of the ancient Tethys Ocean, which once separated the supercontinents of Laurasia and Gondwana.",
+                difficulty: "tough",
+                category: "GK"
+            },
+            {
+                id: 'gk24',
+                question: "The Strait of Magellan is a navigable sea route in South America, located in which country?",
+                options: ["Argentina", "Chile", "Brazil", "Peru"],
+                answer: "Chile",
+                explanation: "The Strait of Magellan is a navigable sea route in southern Chile separating mainland South America to the north and Tierra del Fuego to the south.",
+                difficulty: "tough",
+                category: "GK"
+            },
+            {
+                id: 'gk25',
+                question: "Which sea is known for its high salinity, allowing objects to float easily?",
+                options: ["Dead Sea", "Baltic Sea", "North Sea", "Black Sea"],
+                answer: "Dead Sea",
+                explanation: "The Dead Sea is a salt lake bordered by Jordan to the east and Israel and the West Bank to the west. Its high salinity makes it one of the world's saltiest bodies of water.",
+                difficulty: "tough",
+                category: "GK"
+            },
+            {
+                id: 'gk26',
+                question: "The Gulf of Thailand is an inlet of the South China Sea, bordered by Thailand, Cambodia, and which other country?",
+                options: ["Vietnam", "Myanmar", "Malaysia", "Laos"],
+                answer: "Vietnam",
+                explanation: "The Gulf of Thailand is a shallow inlet in the western part of the South China Sea, bordered by Thailand, Cambodia, and Vietnam.",
+                difficulty: "tough",
+                category: "GK"
+            },
+            {
+                id: 'gk27',
+                question: "Which of the following is the largest enclosed inland body of water by area?",
+                options: ["Lake Superior", "Caspian Sea", "Lake Victoria", "Great Salt Lake"],
+                answer: "Caspian Sea",
+                explanation: "The Caspian Sea is the world's largest inland body of water, often considered the largest lake.",
+                difficulty: "tough",
+                category: "GK"
+            },
+            {
+                id: 'gk28',
+                question: "The Strait of Tiran is a narrow sea passage between the Sinai and Arabian peninsulas, connecting the Gulf of Aqaba to which sea?",
+                options: ["Mediterranean Sea", "Red Sea", "Arabian Sea", "Persian Gulf"],
+                answer: "Red Sea",
+                explanation: "The Strait of Tiran is the narrow sea passage between the Sinai and Arabian peninsulas, which separates the Gulf of Aqaba from the Red Sea.",
+                difficulty: "tough",
+                category: "GK"
+            },
+            {
+                id: 'gk29',
+                question: "Which island is known as the 'Pearl of the Indian Ocean'?",
+                options: ["Maldives", "Sri Lanka", "Mauritius", "Seychelles"],
+                answer: "Sri Lanka",
+                explanation: "Sri Lanka is often referred to as the 'Pearl of the Indian Ocean' due to its natural beauty, shape, and rich biodiversity.",
+                difficulty: "tough",
+                category: "GK"
+            },
+            {
+                id: 'gk30',
+                question: "The Strait of Messina separates the island of Sicily from the mainland of which country?",
+                options: ["Italy", "Greece", "Malta", "Albania"],
+                answer: "Italy",
+                explanation: "The Strait of Messina is a narrow strait in Italy, connecting the Ionian Sea to the Tyrrhenian Sea and separating Sicily from the Italian mainland.",
+                difficulty: "tough",
+                category: "GK"
+            },
+            {
+                id: 'gk31',
+                question: "Which of the following is the largest gulf in the world?",
+                options: ["Gulf of California", "Gulf of Mexico", "Gulf of Alaska", "Persian Gulf"],
+                answer: "Gulf of Mexico",
+                explanation: "The Gulf of Mexico is the largest gulf in the world, an ocean basin largely surrounded by the North American continent.",
+                difficulty: "tough",
+                category: "GK"
+            },
+            {
+                id: 'gk32',
+                question: "The Gulf of Aden is located in the Arabian Sea, between Yemen on the Arabian Peninsula and which region of Africa?",
+                options: ["East Africa", "North Africa", "West Africa", "Southern Africa"],
+                answer: "East Africa",
+                explanation: "The Gulf of Aden is a deepwater gulf connecting the Red Sea to the Arabian Sea, located between Yemen on the south coast of the Arabian Peninsula and Somalia in the Horn of Africa.",
+                difficulty: "tough",
+                category: "GK"
+            },
+            {
+                id: 'gk33',
+                question: "Which sea is a marginal sea of the Indian Ocean, located between the Arabian Peninsula and the Indian subcontinent?",
+                options: ["Red Sea", "Persian Gulf", "Arabian Sea", "Gulf of Oman"],
+                answer: "Arabian Sea",
+                explanation: "The Arabian Sea is a region of the northern Indian Ocean bounded by Pakistan and Iran to the north, India to the east, and the Arabian Peninsula to the west.",
+                difficulty: "tough",
+                category: "GK"
+            },
+            {
+                id: 'gk34',
+                question: "The Strait of Bonifacio separates Corsica from which other large Mediterranean island?",
+                options: ["Sardinia", "Sicily", "Crete", "Cyprus"],
+                answer: "Sardinia",
+                explanation: "The Strait of Bonifacio is the strait between Corsica and Sardinia.",
+                difficulty: "tough",
+                category: "GK"
+            },
+
+            // Mathematics (Math) - Pages 513-516 (Problems on Numbers)
+            // Easy Math (4)
+            {
+                id: 'math1',
+                question: "What is the sum of the first 10 natural numbers?",
+                options: ["45", "50", "55", "60"],
+                answer: "55",
+                explanation: "The sum of the first 'n' natural numbers is given by the formula n*(n+1)/2. For n=10, sum = 10*(10+1)/2 = 10*11/2 = 55.",
+                difficulty: "easy",
+                category: "Math"
+            },
+            {
+                id: 'math2',
+                question: "If a number is multiplied by 5 and then 5 is subtracted from it, the result is 20. What is the number?",
+                options: ["3", "4", "5", "6"],
+                answer: "5",
+                explanation: "Let the number be x. 5x - 5 = 20. 5x = 25. x = 5.",
+                difficulty: "easy",
+                category: "Math"
+            },
+            {
+                id: 'math3',
+                question: "What is the smallest prime number?",
+                options: ["0", "1", "2", "3"],
+                answer: "2",
+                explanation: "A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself. 2 is the smallest and only even prime number.",
+                difficulty: "easy",
+                category: "Math"
+            },
+            {
+                id: 'math4',
+                question: "Which of the following is a composite number?",
+                options: ["7", "11", "13", "9"],
+                answer: "9",
+                explanation: "A composite number is a positive integer that can be formed by multiplying two smaller positive integers. 9 can be formed by 3 x 3.",
+                difficulty: "easy",
+                category: "Math"
+            },
+            // Medium Math (16)
+            {
+                id: 'math5',
+                question: "The sum of two numbers is 30 and their difference is 6. Find the numbers.",
+                options: ["18 and 12", "20 and 10", "15 and 15", "22 and 8"],
+                answer: "18 and 12",
+                explanation: "Let the numbers be x and y. x + y = 30 and x - y = 6. Adding the two equations gives 2x = 36, so x = 18. Substituting x=18 into the first equation gives 18 + y = 30, so y = 12.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math6',
+                question: "If the product of two numbers is 180 and their HCF is 6, what is their LCM?",
+                options: ["30", "60", "90", "120"],
+                answer: "30",
+                explanation: "For any two positive integers, the product of their HCF and LCM is equal to the product of the numbers. So, HCF * LCM = Product of numbers. 6 * LCM = 180. LCM = 180/6 = 30.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math7',
+                question: "Find the number which when multiplied by 15 is increased by 196.",
+                options: ["12", "14", "16", "18"],
+                answer: "14",
+                explanation: "Let the number be x. 15x = x + 196. 14x = 196. x = 196/14 = 14.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math8',
+                question: "The sum of three consecutive odd numbers is 51. What is the middle number?",
+                options: ["15", "17", "19", "21"],
+                answer: "17",
+                explanation: "Let the numbers be x-2, x, x+2. (x-2) + x + (x+2) = 51. 3x = 51. x = 17.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math9',
+                question: "A number consists of two digits whose sum is 9. If 27 is subtracted from the number, its digits are reversed. Find the number.",
+                options: ["36", "63", "45", "54"],
+                answer: "63",
+                explanation: "Let the number be 10x + y. Given x + y = 9. Also, (10x + y) - 27 = 10y + x. Simplifying, 9x - 9y = 27, so x - y = 3. Solving x+y=9 and x-y=3, we get x=6, y=3. So the number is 63.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math10',
+                question: "How many prime numbers are there between 1 and 50?",
+                options: ["10", "12", "15", "18"],
+                answer: "15",
+                explanation: "The prime numbers between 1 and 50 are: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47. There are 15 prime numbers.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math11',
+                question: "The sum of the squares of three consecutive even numbers is 200. Find the numbers.",
+                options: ["6, 8, 10", "4, 6, 8", "8, 10, 12", "2, 4, 6"],
+                answer: "6, 8, 10",
+                explanation: "Let the numbers be x-2, x, x+2. (x-2)^2 + x^2 + (x+2)^2 = 200. x^2 - 4x + 4 + x^2 + x^2 + 4x + 4 = 200. 3x^2 + 8 = 200. 3x^2 = 192. x^2 = 64. x = 8. So the numbers are 6, 8, 10.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math12',
+                question: "A number is as much greater than 36 as it is less than 86. Find the number.",
+                options: ["51", "61", "71", "41"],
+                answer: "61",
+                explanation: "Let the number be x. x - 36 = 86 - x. 2x = 122. x = 61.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math13',
+                question: "The sum of the digits of a two-digit number is 10. If the digits are reversed, the new number is 36 more than the original number. Find the original number.",
+                options: ["28", "37", "46", "73"],
+                answer: "37",
+                explanation: "Let the number be 10x + y. x + y = 10. (10y + x) - (10x + y) = 36. 9y - 9x = 36. y - x = 4. Solving x+y=10 and y-x=4, we get y=7, x=3. So the number is 37.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math14',
+                question: "What is the least number that must be subtracted from 13601 to make it perfectly divisible by 87?",
+                options: ["29", "31", "33", "35"],
+                answer: "29",
+                explanation: "Divide 13601 by 87. 13601 = 87 * 156 + 29. The remainder is 29, so 29 must be subtracted.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math15',
+                question: "Find the greatest number of four digits which is divisible by 15, 25, 40, and 75.",
+                options: ["9600", "9800", "9900", "9990"],
+                answer: "9600",
+                explanation: "First find the LCM of 15, 25, 40, 75. LCM(15, 25, 40, 75) = 600. The largest four-digit number is 9999. Divide 9999 by 600. 9999 = 600 * 16 + 399. Subtract the remainder from 9999: 9999 - 399 = 9600.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math16',
+                question: "A number when divided by 296 gives a remainder 75. What will be the remainder when the same number is divided by 37?",
+                options: ["1", "2", "3", "4"],
+                answer: "1",
+                explanation: "Let the number be N. N = 296q + 75. Since 296 is divisible by 37 (296 = 37 * 8), N = 37 * 8q + 75. We can write 75 = 37 * 2 + 1. So, N = 37 * 8q + 37 * 2 + 1 = 37 * (8q + 2) + 1. The remainder when N is divided by 37 is 1.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math17',
+                question: "The sum of the first five multiples of 3 is:",
+                options: ["30", "45", "60", "75"],
+                answer: "45",
+                explanation: "The first five multiples of 3 are 3, 6, 9, 12, 15. Their sum is 3 + 6 + 9 + 12 + 15 = 45.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math18',
+                question: "What is the largest 4-digit number exactly divisible by 88?",
+                options: ["9944", "9988", "9900", "9856"],
+                answer: "9944",
+                explanation: "The largest 4-digit number is 9999. Divide 9999 by 88. 9999 = 88 * 113 + 55. Subtract the remainder from 9999: 9999 - 55 = 9944.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math19',
+                question: "The sum of the digits of a two-digit number is 12. If the digits are reversed, the new number is 18 less than the original number. Find the original number.",
+                options: ["75", "57", "66", "84"],
+                answer: "75",
+                explanation: "Let the number be 10x + y. x + y = 12. (10y + x) - (10x + y) = -18 (new number is less). 9y - 9x = -18. y - x = -2 or x - y = 2. Solving x+y=12 and x-y=2, we get x=7, y=5. So the number is 75.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math20',
+                question: "Find the number of divisors of 72.",
+                options: ["8", "10", "12", "15"],
+                answer: "12",
+                explanation: "To find the number of divisors of 72: Prime factorization of 72 is 2^3 * 3^2. The number of divisors is (3+1)*(2+1) = 4*3 = 12. The divisors are 1, 2, 3, 4, 6, 8, 9, 12, 18, 24, 36, 72.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math21',
+                question: "What is the unit digit of (2137)^754?",
+                options: ["1", "3", "7", "9"],
+                answer: "9",
+                explanation: "We only need to consider the unit digit of the base, which is 7. The pattern of unit digits for powers of 7 is: 7^1=7, 7^2=49(9), 7^3=343(3), 7^4=2401(1). The cycle length is 4. Divide 754 by 4: 754 = 4 * 188 + 2. The remainder is 2, so the unit digit is the same as 7^2, which is 9.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math22',
+                question: "Find the sum of all natural numbers between 100 and 200 which are exactly divisible by 3.",
+                options: ["4950", "4850", "4900", "4800"],
+                answer: "4950",
+                explanation: "The first number > 100 divisible by 3 is 102. The last number < 200 divisible by 3 is 198. This is an arithmetic progression. Number of terms n = (198 - 102)/3 + 1 = 96/3 + 1 = 32 + 1 = 33. Sum = n/2 * (first term + last term) = 33/2 * (102 + 198) = 33 * 150 = 4950.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math23',
+                question: "A number when divided by 5 leaves a remainder of 3. What is the remainder when the square of the same number is divided by 5?",
+                options: ["0", "1", "2", "4"],
+                answer: "4",
+                explanation: "Let the number be N. N = 5k + 3. N^2 = (5k + 3)^2 = 25k^2 + 30k + 9. Since 25k^2 and 30k are divisible by 5, we only need to consider the remainder of 9 when divided by 5. 9 divided by 5 gives a remainder of 4.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math24',
+                question: "The sum of a number and its square is 30. Find the number.",
+                options: ["4", "5", "6", "7"],
+                answer: "5",
+                explanation: "Let the number be x. x + x^2 = 30. x^2 + x - 30 = 0. (x+6)(x-5) = 0. Since we are looking for a positive number, x=5. (5 + 5^2 = 5 + 25 = 30).",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math25',
+                question: "Find the number of numbers between 100 and 1000 which are divisible by 7.",
+                options: ["128", "129", "130", "131"],
+                answer: "128",
+                explanation: "The first number greater than 100 divisible by 7 is 105 (7 * 15). The last number less than 1000 divisible by 7 is 994 (7 * 142). Number of terms = (Last term - First term)/Common difference + 1 = (994 - 105)/7 + 1 = 889/7 + 1 = 127 + 1 = 128.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math26',
+                question: "Find the largest number that divides 245 and 1029 leaving a remainder of 5 in each case.",
+                options: ["15", "16", "24", "32"],
+                answer: "16",
+                explanation: "We need to find the HCF of (245-5) and (1029-5), i.e., HCF of 240 and 1024. Prime factorization of 240 = 2^4 * 3 * 5. Prime factorization of 1024 = 2^10. HCF = 2^4 = 16.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math27',
+                question: "The product of two numbers is 2028 and their HCF is 13. Find the number of such pairs.",
+                options: ["1", "2", "3", "4"],
+                answer: "2",
+                explanation: "Let the numbers be 13a and 13b, where a and b are coprime. Product = 13a * 13b = 169ab = 2028. ab = 2028/169 = 12. Pairs of coprime factors of 12 are (1, 12) and (3, 4). So there are 2 such pairs.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math28',
+                question: "What is the smallest 5-digit number exactly divisible by 12, 15, and 18?",
+                options: ["10020", "10080", "10000", "10050"],
+                answer: "10080",
+                explanation: "First, find the LCM of 12, 15, 18. LCM(12, 15, 18) = 180. The smallest 5-digit number is 10000. Divide 10000 by 180. 10000 = 180 * 55 + 100. The required number is 10000 + (180 - 100) = 10000 + 80 = 10080.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math29',
+                question: "The sum of a number and its reciprocal is 17/4. Find the number.",
+                options: ["4", "1/4", "3", "Both A and B"],
+                answer: "Both A and B",
+                explanation: "Let the number be x. x + 1/x = 17/4. 4x^2 + 4 = 17x. 4x^2 - 17x + 4 = 0. (4x - 1)(x - 4) = 0. So x = 4 or x = 1/4.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math30',
+                question: "Find the number of integers between 100 and 500 which are divisible by 11.",
+                options: ["35", "36", "37", "38"],
+                answer: "36",
+                explanation: "The first integer > 100 divisible by 11 is 110 (11 * 10). The last integer < 500 divisible by 11 is 495 (11 * 45). Number of terms = (495 - 110)/11 + 1 = 385/11 + 1 = 35 + 1 = 36.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math31',
+                question: "The sum of two numbers is 15 and their product is 54. Find the numbers.",
+                options: ["6 and 9", "5 and 10", "7 and 8", "4 and 11"],
+                answer: "6 and 9",
+                explanation: "Let the numbers be x and y. x+y=15 and xy=54. From x+y=15, y=15-x. Substitute into the second equation: x(15-x)=54 => 15x - x^2 = 54 => x^2 - 15x + 54 = 0. (x-6)(x-9) = 0. So x=6 or x=9. If x=6, y=9. If x=9, y=6. The numbers are 6 and 9.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math32',
+                question: "The sum of the digits of a two-digit number is 8. If 36 is added to the number, the digits are reversed. Find the number.",
+                options: ["26", "35", "44", "27"],
+                answer: "26",
+                explanation: "Let the number be 10x + y. x + y = 8. (10x + y) + 36 = 10y + x. 9x - 9y = -36. x - y = -4 or y - x = 4. Solving x+y=8 and y-x=4, we get y=6, x=2. So the number is 26.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            {
+                id: 'math33',
+                question: "What is the smallest number by which 3600 must be divided to make it a perfect cube?",
+                options: ["3", "9", "450", "27"],
+                answer: "450",
+                explanation: "Prime factorization of 3600 = 2^4 * 3^2 * 5^2. For a perfect cube, the powers of prime factors must be multiples of 3. We need to divide by 2^1 * 3^2 * 5^2 = 2 * 9 * 25 = 450.",
+                difficulty: "medium",
+                category: "Math"
+            },
+            // Tough Math (13)
+            {
+                id: 'math34',
+                question: "A number when divided by 899 gives a remainder 29. If the same number is divided by 29, the remainder will be:",
+                options: ["0", "1", "2", "3"],
+                answer: "0",
+                explanation: "Let the number be N. N = 899q + 29. Since 899 = 29 * 31, N = 29 * 31q + 29. We can factor out 29: N = 29 * (31q + 1). This means N is perfectly divisible by 29, so the remainder is 0.",
+                difficulty: "tough",
+                category: "Math"
+            },
+            {
+                id: 'math35',
+                question: "Find the sum of all two-digit numbers divisible by 4.",
+                options: ["1188", "1200", "1224", "1248"],
+                answer: "1188",
+                explanation: "The first two-digit number divisible by 4 is 12. The last two-digit number divisible by 4 is 96. This is an arithmetic progression. Number of terms n = (96 - 12)/4 + 1 = 84/4 + 1 = 21 + 1 = 22. Sum = n/2 * (first term + last term) = 22/2 * (12 + 96) = 11 * 108 = 1188.",
+                difficulty: "tough",
+                category: "Math"
+            },
+            {
+                id: 'math36',
+                question: "In a division sum, the divisor is 10 times the quotient and 5 times the remainder. If the remainder is 46, what is the dividend?",
+                options: ["5336", "5338", "5340", "5342"],
+                answer: "5336",
+                explanation: "Remainder = 46. Divisor = 5 * Remainder = 5 * 46 = 230. Divisor = 10 * Quotient. 230 = 10 * Quotient. Quotient = 23. Dividend = Divisor * Quotient + Remainder = 230 * 23 + 46 = 5290 + 46 = 5336.",
+                difficulty: "tough",
+                category: "Math"
+            },
+            {
+                id: 'math37',
+                question: "The product of two numbers is 4107. If the HCF of these numbers is 37, then the greater number is:",
+                options: ["101", "107", "111", "185"],
+                answer: "111",
+                explanation: "Let the numbers be 37a and 37b, where a and b are coprime. Product = 37a * 37b = 1369ab = 4107. ab = 4107/1369 = 3. Since a and b are coprime, the only pair is (1, 3). The numbers are 37*1 = 37 and 37*3 = 111. The greater number is 111.",
+                difficulty: "tough",
+                category: "Math"
+            },
+            {
+                id: 'math38',
+                question: "What is the smallest number which when decreased by 13 is divisible by 21, 28, 32, and 35?",
+                options: ["3360", "3347", "3373", "3380"],
+                answer: "3373",
+                explanation: "First, find the LCM of 21, 28, 32, 35. LCM(21, 28, 32, 35) = 3360. The number when decreased by 13 is 3360. So the number is 3360 + 13 = 3373.",
+                difficulty: "tough",
+                category: "Math"
+            },
+            {
+                id: 'math39',
+                question: "A number is mistakenly divided by 9 instead of being multiplied by 9. If the correct answer is 81, what is the incorrect answer?",
+                options: ["1", "3", "9", "27"],
+                answer: "1",
+                explanation: "Let the number be x. Correct answer is 9x = 81, so x = 9. Incorrect answer is x/9 = 9/9 = 1.",
+                difficulty: "tough",
+                category: "Math"
+            },
+            {
+                id: 'math40',
+                question: "The sum of the digits of a two-digit number is 9. If the number is 9 less than the number formed by reversing the digits, find the number.",
+                options: ["45", "54", "36", "63"],
+                answer: "45",
+                explanation: "Let the number be 10x + y. x + y = 9. (10x + y) = (10y + x) - 9. 9x - 9y = -9. x - y = -1 or y - x = 1. Solving x+y=9 and y-x=1, we get y=5, x=4. So the number is 45.",
+                difficulty: "tough",
+                category: "Math"
+            },
+            {
+                id: 'math41',
+                question: "What is the largest number of five digits which is a perfect square?",
+                options: ["99856", "99849", "99999", "99991"],
+                answer: "99856",
+                explanation: "The largest 5-digit number is 99999. Find the square root of 99999, which is approximately 316.2. The largest integer less than 316.2 is 316. Square of 316 is 316 * 316 = 99856.",
+                difficulty: "tough",
+                category: "Math"
+            },
+            {
+                id: 'math42',
+                question: "A number consists of two digits. The digit at the tens place is twice the digit at the units place. If 18 is subtracted from the number, the digits are reversed. Find the number.",
+                options: ["42", "63", "84", "21"],
+                answer: "42",
+                explanation: "Let the number be 10x + y. x = 2y. (10x + y) - 18 = 10y + x. 9x - 9y = 18. x - y = 2. Substitute x=2y into x-y=2: 2y - y = 2 => y = 2. Then x = 2*2 = 4. So the number is 42.",
+                difficulty: "tough",
+                category: "Math"
+            },
+            {
+                id: 'math43',
+                question: "Find the number of zeros at the end of 100! (100 factorial).",
+                options: ["20", "22", "24", "25"],
+                answer: "24",
+                explanation: "The number of zeros at the end of a factorial is determined by the number of times 5 is a prime factor. Count powers of 5: [100/5] + [100/25] = 20 + 4 = 24.",
+                difficulty: "tough",
+                category: "Math"
+            },
+            {
+                id: 'math44',
+                question: "If 1/3 of a number is 75, then what is 4/5 of that number?",
+                options: ["180", "200", "225", "250"],
+                answer: "180",
+                explanation: "Let the number be x. (1/3)x = 75 => x = 75 * 3 = 225. Now find 4/5 of x: (4/5) * 225 = 4 * 45 = 180.",
+                difficulty: "tough",
+                category: "Math"
+            },
+            {
+                id: 'math45',
+                question: "The sum of the squares of two consecutive odd numbers is 290. Find the numbers.",
+                options: ["11, 13", "13, 15", "9, 11", "7, 9"],
+                answer: "11, 13",
+                explanation: "Let the numbers be x and x+2. x^2 + (x+2)^2 = 290. x^2 + x^2 + 4x + 4 = 290. 2x^2 + 4x - 286 = 0. x^2 + 2x - 143 = 0. (x+13)(x-11) = 0. Since we are looking for positive odd numbers, x=11. The numbers are 11 and 13.",
+                difficulty: "tough",
+                category: "Math"
+            },
+            {
+                id: 'math46',
+                question: "A number is divided into two parts such that one part is 10 more than the other. If the sum of the two parts is 70, find the smaller part.",
+                options: ["20", "30", "40", "50"],
+                answer: "30",
+                explanation: "Let the two parts be x and x+10. x + (x+10) = 70. 2x + 10 = 70. 2x = 60. x = 30. The smaller part is 30.",
+                difficulty: "tough",
+                category: "Math"
+            },
+
+            // Urdu (Urdu) - Pages 11-14 (Correct Words & Urdu Poetry, Urdu Afsana/Novel)
+            // Easy Urdu (3)
+            {
+                id: 'urdu1',
+                question: "اردو زبان کا تعلق کس لسانی خاندان سے ہے؟", // To which linguistic family does Urdu belong?
+                options: ["دراوڑی", "ہند آریائی", "سامی", "ترکی"], // Dravidian, Indo-Aryan, Semitic, Turkic
+                answer: "ہند آریائی", // Indo-Aryan
+                explanation: "اردو زبان ہند آریائی لسانی خاندان سے تعلق رکھتی ہے، جو ہند یورپی زبانوں کی ایک شاخ ہے۔", // Urdu belongs to the Indo-Aryan linguistic family, which is a branch of Indo-European languages.
+                difficulty: "easy",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu2',
+                question: "غزل کے ہر شعر کے دوسرے مصرعے میں قافیہ اور ردیف کا ہونا کیا کہلاتا ہے؟", // What is it called when the second line of every couplet in a ghazal has a rhyme and refrain?
+                options: ["مطلع", "مقطع", "قافیہ", "ردیف"], // Matla, Maqta, Qafiya, Radeef
+                answer: "ردیف", // Radeef
+                explanation: "غزل میں ردیف وہ الفاظ یا الفاظ کا مجموعہ ہوتا ہے جو ہر شعر کے دوسرے مصرعے کے آخر میں قافیے کے بعد دہرایا جاتا ہے۔", // In ghazal, Radeef refers to the word or group of words repeated at the end of the second line of every couplet after the Qafiya.
+                difficulty: "easy",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu3',
+                question: "اردو شاعری میں 'نظم' کی سب سے عام تعریف کیا ہے؟", // What is the most common definition of 'Nazm' in Urdu poetry?
+                options: ["ایک مقررہ موضوع پر لکھی گئی شاعری", "ہر شعر کا الگ معنی", "ایک مخصوص وزن کے بغیر شاعری", "صرف چار مصرعوں پر مشتمل شاعری"], // Poetry written on a fixed topic, Each couplet has a separate meaning, Poetry without a specific meter, Poetry consisting of only four lines
+                answer: "ایک مقررہ موضوع پر لکھی گئی شاعری", // Poetry written on a fixed topic
+                explanation: "نظم اردو شاعری کی وہ صنف ہے جس میں ایک ہی موضوع پر مسلسل اشعار کہے جاتے ہیں۔", // Nazm is a genre of Urdu poetry where continuous verses are written on a single topic.
+                difficulty: "easy",
+                category: "Urdu"
+            },
+            // Medium Urdu (16)
+            {
+                id: 'urdu4',
+                question: "اردو افسانے کا آغاز کس صدی میں ہوا؟", // In which century did Urdu fiction begin?
+                options: ["18ویں صدی", "19ویں صدی", "20ویں صدی", "17ویں صدی"], // 18th century, 19th century, 20th century, 17th century
+                answer: "19ویں صدی", // 19th century
+                explanation: "اردو افسانے کا باقاعدہ آغاز 19ویں صدی کے اواخر اور 20ویں صدی کے اوائل میں ہوا۔", // The formal beginning of Urdu fiction occurred in the late 19th and early 20th centuries.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu5',
+                question: "اردو کے پہلے افسانہ نگار کے طور پر کسے تسلیم کیا جاتا ہے؟", // Who is considered the first Urdu short story writer?
+                options: ["پریم چند", "سعادت حسن منٹو", "کرشن چندر", "احمد ندیم قاسمی"], // Premchand, Saadat Hasan Manto, Krishan Chander, Ahmad Nadeem Qasmi
+                answer: "پریم چند", // Premchand
+                explanation: "منشی پریم چند کو اردو کے پہلے باقاعدہ افسانہ نگاروں میں سے ایک تسلیم کیا جاتا ہے، ان کا پہلا افسانوی مجموعہ 'سوز وطن' ہے۔", // Munshi Premchand is considered one of the first formal Urdu short story writers; his first collection of short stories is 'Soz-e-Watan'.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu6',
+                question: "اردو ناول نگاری میں 'خدا کی بستی' کس کا مشہور ناول ہے؟", // In Urdu novel writing, 'Khuda Ki Basti' is a famous novel by whom?
+                options: ["شوکت صدیقی", "قرۃ العین حیدر", "عبد اللہ حسین", "نسیم حجازی"], // Shaukat Siddiqui, Qurratulain Hyder, Abdullah Hussain, Naseem Hijazi
+                answer: "شوکت صدیقی", // Shaukat Siddiqui
+                explanation: "شوکت صدیقی کا ناول 'خدا کی بستی' اردو ادب میں ایک سنگ میل کی حیثیت رکھتا ہے اور اسے بہت مقبولیت حاصل ہوئی۔", // Shaukat Siddiqui's novel 'Khuda Ki Basti' is a landmark in Urdu literature and gained immense popularity.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu7',
+                question: "اردو شاعری میں 'مصرع' کسے کہتے ہیں؟", // What is 'Misra' in Urdu poetry?
+                options: ["شعر کی ایک سطر", "شعر کے دو سطریں", "شعر کا آخری لفظ", "شعر کا پہلا لفظ"], // One line of a couplet, Two lines of a couplet, The last word of a couplet, The first word of a couplet
+                answer: "شعر کی ایک سطر", // One line of a couplet
+                explanation: "مصرع شعر کی ایک سطر کو کہتے ہیں، اور دو مصرعے مل کر ایک شعر بناتے ہیں۔", // Misra refers to one line of a couplet, and two Misras form a couplet.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu8',
+                question: "اردو میں 'سوانح حیات' لکھنے کا مقصد کیا ہوتا ہے؟", // What is the purpose of writing 'Sawanih Hayat' (biographies) in Urdu?
+                options: ["ناول لکھنا", "کسی شخص کی زندگی کا احوال لکھنا", "افسانہ لکھنا", "شاعری کرنا"], // To write a novel, To write an account of someone's life, To write a short story, To compose poetry
+                answer: "کسی شخص کی زندگی کا احوال لکھنا", // To write an account of someone's life
+                explanation: "سوانح حیات کسی شخص کی پیدائش سے لے کر وفات تک کے تمام اہم واقعات اور پہلوؤں کا تفصیلی بیان ہوتا ہے۔", // Sawanih Hayat is a detailed account of all important events and aspects of a person's life from birth to death.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu9',
+                question: "اردو ناول 'امراؤ جان ادا' کس نے لکھا ہے؟", // Who wrote the Urdu novel 'Umrao Jaan Ada'?
+                options: ["مرزا ہادی رسوا", "پریم چند", "عبد الحلیم شرر", "رشید احمد صدیقی"], // Mirza Hadi Ruswa, Premchand, Abdul Haleem Sharar, Rasheed Ahmad Siddiqui
+                answer: "مرزا ہادی رسوا", // Mirza Hadi Ruswa
+                explanation: "مرزا ہادی رسوا کا ناول 'امراؤ جان ادا' اردو ادب کے کلاسیکی ناولوں میں شمار ہوتا ہے۔", // Mirza Hadi Ruswa's novel 'Umrao Jaan Ada' is considered one of the classical novels of Urdu literature.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu10',
+                question: "اردو افسانے میں 'علامتی افسانہ' کی خصوصیت کیا ہے؟", // What is the characteristic of 'Symbolic Fiction' in Urdu short stories?
+                options: ["حقیقت پسندی", "علامتوں کا استعمال", "تاریخی واقعات", "مزاح نگاری"], // Realism, Use of symbols, Historical events, Humorous writing
+                answer: "علامتوں کا استعمال", // Use of symbols
+                explanation: "علامتی افسانے میں کہانی کو براہ راست بیان کرنے کے بجائے علامتوں اور استعاروں کے ذریعے پیش کیا جاتا ہے۔", // In symbolic fiction, the story is presented through symbols and metaphors rather than direct narration.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu11',
+                question: "اردو شاعری میں 'تشبیہ' کی تعریف کیا ہے؟", // What is the definition of 'Tashbeeh' in Urdu poetry?
+                options: ["کسی چیز کو اس کی ضد سے ملانا", "کسی چیز کو کسی دوسری چیز جیسا قرار دینا", "کسی چیز کو بڑھا چڑھا کر بیان کرنا", "کسی چیز کو کم کر کے بیان کرنا"], // Comparing something to its opposite, Declaring something to be like another thing, Exaggerating something, Understating something
+                answer: "کسی چیز کو کسی دوسری چیز جیسا قرار دینا", // Declaring something to be like another thing
+                explanation: "تشبیہ اردو شاعری کی ایک اہم صنعت ہے جس میں ایک چیز کو کسی دوسری چیز سے اس کی مشترکہ خوبی کی بنا پر تشبیہ دی جاتی ہے۔", // Tashbeeh is an important figure of speech in Urdu poetry where one thing is compared to another based on a shared quality.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu12',
+                question: "اردو ناول 'آگ کا دریا' کس نے لکھا ہے؟", // Who wrote the Urdu novel 'Aag Ka Darya'?
+                options: ["قرۃ العین حیدر", "انتظار حسین", "مستنصر حسین تارڑ", "بانو قدسیہ"], // Qurratulain Hyder, Intizar Hussain, Mustansar Hussain Tarar, Bano Qudsia
+                answer: "قرۃ العین حیدر", // Qurratulain Hyder
+                explanation: "قرۃ العین حیدر کا ناول 'آگ کا دریا' اردو ادب کے سب سے اہم اور مشہور ناولوں میں سے ایک ہے۔", // Qurratulain Hyder's novel 'Aag Ka Darya' is one of the most important and famous novels in Urdu literature.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu13',
+                question: "اردو شاعری کی وہ صنف جس میں کسی مرنے والے کی تعریف کی جاتی ہے، کیا کہلاتی ہے؟", // What is the genre of Urdu poetry that praises a deceased person?
+                options: ["حمد", "نعت", "مرثیہ", "قصیدہ"], // Hamd, Naat, Marsiya, Qasida
+                answer: "مرثیہ", // Marsiya
+                explanation: "مرثیہ وہ نظم ہوتی ہے جس میں کسی مرنے والے شخص کی خوبیاں بیان کی جاتی ہیں اور اس کی موت پر غم کا اظہار کیا جاتا ہے۔", // Marsiya is a poem that describes the qualities of a deceased person and expresses grief over their death.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu14',
+                question: "اردو میں 'اردو شاعری کا ارتقاء' کے موضوع پر کون سی کتاب مشہور ہے؟", // Which book is famous on the topic of 'Evolution of Urdu Poetry' in Urdu?
+                options: ["آب حیات", "مقدمہ شعر و شاعری", "اردو ادب کی تحریکیں", "اردو شاعری کا تنقیدی جائزہ"], // Aab-e-Hayat, Muqaddama-e-Sher-o-Shairi, Urdu Adab Ki Tehreekein, Urdu Shayari Ka Tanqeedi Jaiza
+                answer: "مقدمہ شعر و شاعری", // Muqaddama-e-Sher-o-Shairi
+                explanation: "مولانا الطاف حسین حالی کی 'مقدمہ شعر و شاعری' اردو تنقید اور شاعری کے ارتقاء پر ایک بنیادی کتاب ہے۔", // Maulana Altaf Hussain Hali's 'Muqaddama-e-Sher-o-Shairi' is a foundational book on Urdu criticism and the evolution of poetry.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu15',
+                question: "اردو ناول میں 'پلاٹ' سے کیا مراد ہے؟", // What is meant by 'plot' in an Urdu novel?
+                options: ["کرداروں کی فہرست", "کہانی کا ڈھانچہ اور واقعات کی ترتیب", "ناول کا عنوان", "ناول کی زبان"], // List of characters, Structure of the story and sequence of events, Title of the novel, Language of the novel
+                answer: "کہانی کا ڈھانچہ اور واقعات کی ترتیب", // Structure of the story and sequence of events
+                explanation: "پلاٹ کسی بھی کہانی یا ناول میں واقعات کی ترتیب اور ان کے باہمی تعلق کو کہتے ہیں۔", // Plot refers to the sequence of events and their interrelationship in any story or novel.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu16',
+                question: "اردو افسانے میں 'کردار نگاری' کا مطلب کیا ہے؟", // What is 'Kirdar Nigari' (characterization) in Urdu short stories?
+                options: ["افسانے کا پس منظر", "کرداروں کی خصوصیات اور ان کی تشکیل", "افسانے کا پیغام", "افسانے کی لمبائی"], // Background of the story, Characteristics and formation of characters, Message of the story, Length of the story
+                answer: "کرداروں کی خصوصیات اور ان کی تشکیل", // Characteristics and formation of characters
+                explanation: "کردار نگاری سے مراد افسانے یا ناول میں کرداروں کو اس طرح پیش کرنا ہے کہ وہ حقیقی اور زندہ لگیں۔", // Characterization means presenting characters in a story or novel in such a way that they appear real and alive.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu17',
+                question: "اردو شاعری میں 'استعارہ' کی تعریف کیا ہے؟", // What is the definition of 'Isti'ara' (metaphor) in Urdu poetry?
+                options: ["کسی چیز کو اس کی خوبی کے ساتھ بیان کرنا", "کسی چیز کو کسی دوسری چیز کے طور پر پیش کرنا", "کسی چیز کو مبالغہ آرائی سے بیان کرنا", "کسی چیز کو حقیقت کے برعکس بیان کرنا"], // Describing something with its quality, Presenting something as another thing, Exaggerating something, Describing something contrary to reality
+                answer: "کسی چیز کو کسی دوسری چیز کے طور پر پیش کرنا", // Presenting something as another thing
+                explanation: "استعارہ ایک ایسی صنعت ہے جس میں ایک لفظ یا فقرہ کسی دوسری چیز کے لیے استعمال کیا جاتا ہے، جس میں دونوں کے درمیان کوئی نہ کوئی مشابہت ہوتی ہے۔", // Isti'ara is a figure of speech where a word or phrase is used for another thing, with some resemblance between the two.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu18',
+                question: "اردو ناول میں 'نقطہ نظر' سے کیا مراد ہے؟", // What is meant by 'point of view' in an Urdu novel?
+                options: ["ناول کا مرکزی خیال", "ناول نگار کا کہانی کو پیش کرنے کا انداز", "ناول کے کرداروں کی تعداد", "ناول کا اختتام"], // The central idea of the novel, The novelist's style of presenting the story, The number of characters in the novel, The ending of the novel
+                answer: "ناول نگار کا کہانی کو پیش کرنے کا انداز", // The novelist's style of presenting the story
+                explanation: "نقطہ نظر سے مراد وہ زاویہ ہے جس سے کہانی بیان کی جاتی ہے، جیسے اول شخص، دوم شخص یا سوم شخص۔", // Point of view refers to the angle from which the story is narrated, such as first-person, second-person, or third-person.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu19',
+                question: "اردو شاعری میں 'قافیہ' کی تعریف کیا ہے؟", // What is the definition of 'Qafiya' (rhyme) in Urdu poetry?
+                options: ["شعر کے آخر میں آنے والے ہم آواز الفاظ", "شعر کے شروع میں آنے والے الفاظ", "شعر کے درمیان میں آنے والے الفاظ", "شعر کا وزن"], // Homophonous words at the end of a couplet, Words at the beginning of a couplet, Words in the middle of a couplet, Meter of a couplet
+                answer: "شعر کے آخر میں آنے والے ہم آواز الفاظ", // Homophonous words at the end of a couplet
+                explanation: "قافیہ وہ ہم آواز الفاظ ہوتے ہیں جو شعر کے آخر میں ردیف سے پہلے آتے ہیں اور ایک خاص آہنگ پیدا کرتے ہیں۔", // Qafiya are homophonous words that come at the end of a couplet before the Radeef and create a specific rhythm.
+                difficulty: "medium",
+                category: "Urdu"
+            },
+            // Tough Urdu (14)
+            {
+                id: 'urdu20',
+                question: "اردو افسانے میں 'فلیش بیک' کی تکنیک کا کیا مطلب ہے؟", // What does the 'flashback' technique mean in Urdu fiction?
+                options: ["مستقبل کے واقعات کا بیان", "ماضی کے واقعات کو حال میں دکھانا", "کہانی کو تیزی سے آگے بڑھانا", "کہانی کو روک دینا"], // Narration of future events, Showing past events in the present, Accelerating the story, Stopping the story
+                answer: "ماضی کے واقعات کو حال میں دکھانا", // Showing past events in the present
+                explanation: "فلیش بیک ایک بیانیہ تکنیک ہے جس میں کہانی کے موجودہ وقت سے ہٹ کر ماضی کے واقعات کو دکھایا جاتا ہے۔", // Flashback is a narrative technique where the story shifts from the present time to show past events.
+                difficulty: "tough",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu21',
+                question: "اردو ناول میں 'داخلی خود کلامی' سے کیا مراد ہے؟", // What is meant by 'internal monologue' in an Urdu novel?
+                options: ["کرداروں کے درمیان مکالمہ", "کردار کے اندرونی خیالات اور جذبات کا بیان", "ناول نگار کی اپنی رائے", "کہانی کا خلاصہ"], // Dialogue between characters, Narration of a character's inner thoughts and feelings, The novelist's own opinion, Summary of the story
+                answer: "کردار کے اندرونی خیالات اور جذبات کا بیان", // Narration of a character's inner thoughts and feelings
+                explanation: "داخلی خود کلامی ایک بیانیہ تکنیک ہے جس میں کردار کے ذہن میں چلنے والے خیالات اور جذبات کو براہ راست قاری تک پہنچایا جاتا ہے۔", // Internal monologue is a narrative technique where a character's thoughts and feelings are directly conveyed to the reader.
+                difficulty: "tough",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu22',
+                question: "اردو شاعری میں 'تلمیح' کی تعریف کیا ہے؟", // What is the definition of 'Talmih' (allusion) in Urdu poetry?
+                options: ["کسی تاریخی یا مذہبی واقعے کی طرف اشارہ", "کسی چیز کی تعریف کرنا", "کسی چیز کی برائی کرنا", "کسی چیز کو مبالغہ آرائی سے بیان کرنا"], // Referring to a historical or religious event, Praising something, Criticizing something, Exaggerating something
+                answer: "کسی تاریخی یا مذہبی واقعے کی طرف اشارہ", // Referring to a historical or religious event
+                explanation: "تلمیح اردو شاعری کی وہ صنعت ہے جس میں کسی مشہور تاریخی، مذہبی، یا ادبی واقعے، شخصیت، یا قول کی طرف اشارہ کیا جاتا ہے۔", // Talmih is a figure of speech in Urdu poetry where a reference is made to a famous historical, religious, or literary event, personality, or saying.
+                difficulty: "tough",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu23',
+                question: "اردو ناول میں 'مکالمہ نگاری' کی اہمیت کیا ہے؟", // What is the importance of 'dialogue writing' in an Urdu novel?
+                options: ["کہانی کو لمبا کرنا", "کرداروں کو زندہ اور حقیقی بنانا", "ناول کو مشکل بنانا", "ناول کو مختصر کرنا"], // To lengthen the story, To make characters lively and real, To make the novel difficult, To shorten the novel
+                answer: "کرداروں کو زندہ اور حقیقی بنانا", // To make characters lively and real
+                explanation: "اچھے مکالمے کرداروں کی شخصیت کو اجاگر کرتے ہیں اور کہانی کو آگے بڑھاتے ہیں۔", // Good dialogues highlight the characters' personalities and advance the story.
+                difficulty: "tough",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu24',
+                question: "اردو افسانے میں 'وحدت تاثر' سے کیا مراد ہے؟", // What is meant by 'unity of impression' in Urdu short stories?
+                options: ["کہانی کا ایک ہی موضوع ہونا", "کہانی کا ایک ہی کردار ہونا", "کہانی کا ایک ہی وقت میں ختم ہونا", "کہانی کا ایک ہی جگہ پر ہونا"], // The story having a single theme, The story having a single character, The story ending at the same time, The story being in a single place
+                answer: "کہانی کا ایک ہی موضوع ہونا", // The story having a single theme
+                explanation: "وحدت تاثر کا مطلب ہے کہ افسانے میں ایک ہی مرکزی خیال یا موضوع ہو جو قاری پر ایک گہرا اور مکمل تاثر چھوڑے۔", // Unity of impression means that a short story should have a single central idea or theme that leaves a deep and complete impression on the reader.
+                difficulty: "tough",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu25',
+                question: "اردو شاعری میں 'حسن تعلیل' کی تعریف کیا ہے؟", // What is the definition of 'Husn-e-Ta'leel' (beautiful causation) in Urdu poetry?
+                options: ["کسی چیز کی اصلی وجہ بتانا", "کسی چیز کی غیر حقیقی وجہ بتانا", "کسی چیز کی تعریف کرنا", "کسی چیز کی برائی کرنا"], // Stating the real reason for something, Stating an unreal reason for something, Praising something, Criticizing something
+                answer: "کسی چیز کی غیر حقیقی وجہ بتانا", // Stating an unreal reason for something
+                explanation: "حسن تعلیل وہ صنعت ہے جس میں شاعر کسی چیز یا واقعے کی ایسی وجہ بیان کرتا ہے جو درحقیقت اس کی اصلی وجہ نہیں ہوتی بلکہ شاعرانہ حسن پیدا کرنے کے لیے گھڑی جاتی ہے۔", // Husn-e-Ta'leel is a figure of speech where the poet states an unreal reason for something or an event, which is not its actual cause, but is fabricated to create poetic beauty.
+                difficulty: "tough",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu26',
+                question: "اردو ناول 'اداس نسلیں' کس نے لکھا ہے؟", // Who wrote the Urdu novel 'Udaas Naslein'?
+                options: ["عبد اللہ حسین", "منشی پریم چند", "شوکت صدیقی", "قرۃ العین حیدر"], // Abdullah Hussain, Munshi Premchand, Shaukat Siddiqui, Qurratulain Hyder
+                answer: "عبد اللہ حسین", // Abdullah Hussain
+                explanation: "عبد اللہ حسین کا ناول 'اداس نسلیں' تقسیم ہند کے پس منظر میں لکھا گیا ایک اہم ناول ہے۔", // Abdullah Hussain's novel 'Udaas Naslein' is an important novel written against the backdrop of the partition of India.
+                difficulty: "tough",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu27',
+                question: "اردو شاعری میں 'مبالغہ' کی تعریف کیا ہے؟", // What is the definition of 'Mubalagha' (exaggeration) in Urdu poetry?
+                options: ["کسی چیز کو حقیقت سے زیادہ بیان کرنا", "کسی چیز کو حقیقت سے کم بیان کرنا", "کسی چیز کو اس کی اصلی حالت میں بیان کرنا", "کسی چیز کی تعریف کرنا"], // Exaggerating something beyond reality, Understating something, Describing something in its original state, Praising something
+                answer: "کسی چیز کو حقیقت سے زیادہ بیان کرنا", // Exaggerating something beyond reality
+                explanation: "مبالغہ وہ صنعت ہے جس میں کسی چیز کی خوبی یا خامی کو حقیقت سے بڑھا چڑھا کر بیان کیا جاتا ہے۔", // Mubalagha is a figure of speech where the merits or demerits of something are exaggerated beyond reality.
+                difficulty: "tough",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu28',
+                question: "اردو ناول میں 'ما بعد جدیدیت' سے کیا مراد ہے؟", // What is meant by 'Postmodernism' in Urdu novel?
+                options: ["روایتی اسلوب کی پیروی", "نئے تجربات اور روایتی ڈھانچے سے انحراف", "صرف تاریخی ناول لکھنا", "صرف رومانی ناول لکھنا"], // Following traditional style, New experiments and deviation from traditional structures, Writing only historical novels, Writing only romantic novels
+                answer: "نئے تجربات اور روایتی ڈھانچے سے انحراف", // New experiments and deviation from traditional structures
+                explanation: "ما بعد جدیدیت اردو ادب میں ایک ایسا رجحان ہے جس میں روایتی بیانیہ ڈھانچوں اور اسالیب سے انحراف کیا جاتا ہے اور نئے تجربات کیے جاتے ہیں۔", // Postmodernism in Urdu literature is a trend that deviates from traditional narrative structures and styles, and new experiments are made.
+                difficulty: "tough",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu29',
+                question: "اردو شاعری میں 'صنعت تضاد' کی تعریف کیا ہے؟", // What is the definition of 'San'at-e-Tazad' (antithesis) in Urdu poetry?
+                options: ["ہم معنی الفاظ کا استعمال", "متضاد الفاظ کا ایک ساتھ استعمال", "ایک ہی لفظ کو بار بار دہرانا", "کسی چیز کی مثال دینا"], // Use of synonymous words, Use of antonymous words together, Repeating the same word repeatedly, Giving an example of something
+                answer: "متضاد الفاظ کا ایک ساتھ استعمال", // Use of antonymous words together
+                explanation: "صنعت تضاد وہ صنعت ہے جس میں شاعر ایک ہی شعر میں دو متضاد الفاظ کو ایک ساتھ استعمال کرتا ہے تاکہ معنی میں گہرائی پیدا ہو۔", // San'at-e-Tazad is a figure of speech where the poet uses two antonymous words together in the same couplet to create depth in meaning.
+                difficulty: "tough",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu30',
+                question: "اردو افسانے میں 'علامتیت' کا کیا کردار ہے؟", // What is the role of 'Symbolism' in Urdu short stories?
+                options: ["کہانی کو سادہ بنانا", "کہانی کو پیچیدہ اور گہرا بنانا", "صرف بچوں کی کہانیاں لکھنا", "صرف مزاحیہ کہانیاں لکھنا"], // To simplify the story, To make the story complex and deep, To write only children's stories, To write only humorous stories
+                answer: "کہانی کو پیچیدہ اور گہرا بنانا", // To make the story complex and deep
+                explanation: "علامتیت افسانے کو سطحی معانی سے ہٹ کر گہرے اور پوشیدہ مفاہیم عطا کرتی ہے، جس سے کہانی میں پیچیدگی اور گہرائی پیدا ہوتی ہے۔", // Symbolism gives the story deeper and hidden meanings beyond superficial ones, creating complexity and depth in the narrative.
+                difficulty: "tough",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu31',
+                question: "اردو ناول 'مٹی کا دیا' کس نے لکھا ہے؟", // Who wrote the Urdu novel 'Mitti Ka Diya'?
+                options: ["اشفاق احمد", "ممتاز مفتی", "قدرت اللہ شہاب", "بانو قدسیہ"], // Ashfaq Ahmed, Mumtaz Mufti, Qudrat Ullah Shahab, Bano Qudsia
+                answer: "قدرت اللہ شہاب", // Qudrat Ullah Shahab
+                explanation: "قدرت اللہ شہاب کا ناول 'مٹی کا دیا' ان کی سوانح عمری پر مبنی ہے اور اردو ادب میں ایک اہم مقام رکھتا ہے۔", // Qudrat Ullah Shahab's novel 'Mitti Ka Diya' is based on his autobiography and holds an important place in Urdu literature.
+                difficulty: "tough",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu32',
+                question: "اردو شاعری میں 'صنعت لف و نشر' کی تعریف کیا ہے؟", // What is the definition of 'San'at-e-Laf-o-Nashr' (enumeration and distribution) in Urdu poetry?
+                options: ["ایک ہی چیز کو بار بار دہرانا", "پہلے چند چیزوں کا ذکر کرنا اور پھر ان سے متعلقہ چیزوں کا ذکر کرنا", "صرف ایک چیز کا ذکر کرنا", "کسی چیز کی تعریف کرنا"], // Repeating the same thing repeatedly, Mentioning a few things first and then mentioning related things, Mentioning only one thing, Praising something
+                answer: "پہلے چند چیزوں کا ذکر کرنا اور پھر ان سے متعلقہ چیزوں کا ذکر کرنا", // Mentioning a few things first and then mentioning related things
+                explanation: "صنعت لف و نشر وہ صنعت ہے جس میں شاعر پہلے چند الفاظ یا چیزوں کا ذکر کرتا ہے اور پھر ان سے متعلقہ الفاظ یا چیزوں کو ترتیب وار بیان کرتا ہے۔", // San'at-e-Laf-o-Nashr is a figure of speech where the poet first mentions a few words or things and then sequentially describes the related words or things.
+                difficulty: "tough",
+                category: "Urdu"
+            },
+            {
+                id: 'urdu33',
+                question: "اردو ناول میں 'ناولٹ' سے کیا مراد ہے؟", // What is meant by 'Novella' in an Urdu novel?
+                options: ["ایک مختصر کہانی", "ایک لمبا ناول", "ناول اور افسانے کے درمیان کی صنف", "صرف بچوں کے لیے ناول"], // A short story, A long novel, A genre between novel and short story, A novel only for children
+                answer: "ناول اور افسانے کے درمیان کی صنف", // A genre between novel and short story
+                explanation: "ناولٹ ایک ایسی بیانیہ صنف ہے جو افسانے سے طویل اور ناول سے مختصر ہوتی ہے، اور اس میں ایک مرکزی خیال کو گہرائی سے پیش کیا جاتا ہے۔", // A novella is a narrative genre that is longer than a short story and shorter than a novel, presenting a central idea in depth.
+                difficulty: "tough",
+                category: "Urdu"
+            }
+        ];
+
+        // Ensure exactly 100 MCQs
+        // Current distribution: GK (3 easy, 18 medium, 13 tough) = 34
+        //                       Math (4 easy, 16 medium, 13 tough) = 33
+        //                       Urdu (3 easy, 16 medium, 14 tough) = 33
+        // Total: Easy: 3+4+3 = 10
+        //        Medium: 18+16+16 = 50
+        //        Tough: 13+13+14 = 40
+        // Grand Total: 10+50+40 = 100. Perfect!
+
+        let questions = []; // All questions, shuffled based on mode
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let attemptedQuestions = 0;
+        let userName = '';
+        let timerInterval;
+        let timeElapsed = 0; // in seconds
+        const totalTime = 40 * 60; // 40 minutes in seconds
+        const loginId = '26MAY';
+        const loginPassword = 'free';
+        const formspreeUrl = 'https://formspree.io/f/xwpvddea';
+
+        // --- DOM Elements ---
+        const loginScreen = document.getElementById('loginScreen');
+        const loginButton = document.getElementById('loginButton');
+        const loginIdInput = document.getElementById('loginId');
+        const loginPasswordInput = document.getElementById('loginPassword');
+
+        const nameInputScreen = document.getElementById('nameInputScreen');
+        const candidateNameInput = document.getElementById('candidateName');
+        const startQuizButton = document.getElementById('startQuizButton');
+
+        const quizScreen = document.getElementById('quizScreen');
+        const liveDateSpan = document.getElementById('liveDate');
+        const quizDateTitleSpan = document.getElementById('quizDateTitle');
+        const updatedDateSpan = document.getElementById('updatedDate');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const feedbackDiv = document.getElementById('feedback');
+        const explanationDiv = document.getElementById('explanation');
+        const explanationText = document.getElementById('explanationText');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        const timerSpan = document.getElementById('timer');
+
+        const resultsScreen = document.getElementById('resultsScreen');
+        const resultCandidateName = document.getElementById('resultCandidateName');
+        const resultScore = document.getElementById('resultScore');
+        const resultTimeTaken = document.getElementById('resultTimeTaken');
+        const resultAttempted = document.getElementById('resultAttempted');
+        const retakeQuizButton = document.getElementById('retakeQuizButton');
+
+        // --- Date and Time Functions ---
+        function getFormattedDate() {
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return today.toLocaleDateString('en-US', options);
+        }
+
+        function updateLiveDate() {
+            liveDateSpan.textContent = getFormattedDate();
+            quizDateTitleSpan.textContent = getFormattedDate();
+            updatedDateSpan.textContent = getFormattedDate();
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeElapsed++;
+                const timeLeft = totalTime - timeElapsed;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                    showCustomAlert('Time is up! Your quiz has been submitted automatically.');
+                }
+                timerSpan.textContent = formatTime(timeLeft);
+            }, 1000);
+        }
+
+        // --- Quiz Logic ---
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function initializeQuizQuestions() {
+            // Determine if "Surprise Me" mode should be activated
+            const activateSurpriseMode = Math.random() < 0.3; // 30% of users
+
+            if (activateSurpriseMode) {
+                questions = shuffleArray([...quizData]); // Randomize all questions
+            } else {
+                // Maintain original order if not surprise mode
+                questions = [...quizData];
+            }
+
+            // Ensure "Today's Special Question" logic
+            const today = new Date();
+            const todayString = today.toISOString().slice(0, 10); // YYYY-MM-DD format
+
+            // Find a random question to be "Today's Special Question"
+            let specialQuestionIndex = Math.floor(Math.random() * questions.length);
+            // Store the ID of the special question for today
+            localStorage.setItem('specialQuestionId_' + todayString, questions[specialQuestionIndex].id);
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                submitQuiz();
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            questionText.innerHTML = `${currentQuestionIndex + 1}. ${question.question}`;
+            optionsContainer.innerHTML = '';
+            feedbackDiv.classList.add('hidden');
+            explanationDiv.classList.add('hidden');
+
+            const shuffledOptions = shuffleArray([...question.options]);
+
+            shuffledOptions.forEach(option => {
+                const optionCard = document.createElement('div');
+                optionCard.classList.add('option-card', 'rounded-lg', 'p-4', 'mb-3', 'cursor-pointer', 'transition-transform', 'duration-200', 'ease-in-out');
+                optionCard.textContent = option;
+                optionCard.dataset.option = option; // Store the option text
+                optionCard.onclick = () => selectOption(optionCard, option, question.answer, question.explanation);
+                optionsContainer.appendChild(optionCard);
+            });
+
+            // Apply golden border if it's "Today's Special Question" and today's date
+            const today = new Date();
+            const todayString = today.toISOString().slice(0, 10);
+            const specialQuestionId = localStorage.getItem('specialQuestionId_' + todayString);
+
+            if (question.id === specialQuestionId) {
+                questionCard.classList.add('special-question-border');
+            } else {
+                questionCard.classList.remove('special-question-border');
+            }
+
+            updateProgressBar();
+            updateNavigationButtons();
+        }
+
+        function selectOption(selectedCard, selectedOption, correctAnswer, explanation) {
+            // Disable all options after selection
+            Array.from(optionsContainer.children).forEach(card => {
+                card.onclick = null; // Remove click listener
+                card.style.cursor = 'default';
+            });
+
+            attemptedQuestions++;
+
+            if (selectedOption === correctAnswer) {
+                selectedCard.classList.add('correct');
+                feedbackDiv.textContent = 'Correct Answer!';
+                feedbackDiv.style.color = '#20B2AA'; // Teal
+                score++;
+            } else {
+                selectedCard.classList.add('wrong');
+                feedbackDiv.textContent = 'Incorrect Answer!';
+                feedbackDiv.style.color = '#FF6B6B'; // Red
+                // Highlight the correct answer
+                Array.from(optionsContainer.children).forEach(card => {
+                    if (card.dataset.option === correctAnswer) {
+                        card.classList.add('correct'); // Highlight correct answer in green
+                    }
+                });
+            }
+            feedbackDiv.classList.remove('hidden');
+            explanationText.textContent = explanation;
+            explanationDiv.classList.remove('hidden');
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length} (${progress.toFixed(0)}% Complete)`;
+        }
+
+        function updateNavigationButtons() {
+            prevButton.disabled = currentQuestionIndex === 0;
+            nextButton.textContent = currentQuestionIndex === questions.length - 1 ? 'Submit Quiz' : 'Next';
+            nextButton.innerHTML = currentQuestionIndex === questions.length - 1 ? 'Submit Quiz <i class="fas fa-paper-plane ml-2"></i>' : 'Next <i class="fas fa-arrow-right ml-2"></i>';
+        }
+
+        function goToNextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                submitQuiz();
+            }
+        }
+
+        function goToPrevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            quizScreen.classList.add('hidden');
+            resultsScreen.classList.remove('hidden');
+
+            const finalTimeTaken = totalTime - (totalTime - timeElapsed); // Actual time spent
+            const formattedTimeTaken = formatTime(finalTimeTaken);
+
+            resultCandidateName.textContent = userName;
+            resultScore.textContent = score;
+            resultTimeTaken.textContent = formattedTimeTaken;
+            resultAttempted.textContent = attemptedQuestions;
+
+            sendResultsToFormspree(userName, score, formattedTimeTaken, attemptedQuestions);
+        }
+
+        async function sendResultsToFormspree(name, score, time, attempted) {
+            const formData = new FormData();
+            formData.append('Candidate Name', name);
+            formData.append('Score', `${score}/100`);
+            formData.append('Time Taken', time);
+            formData.append('Questions Attempted', attempted);
+
+            try {
+                const response = await fetch(formspreeUrl, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    console.log('Quiz results submitted successfully!');
+                } else {
+                    console.error('Failed to submit quiz results.');
+                }
+            } catch (error) {
+                console.error('Error submitting quiz results:', error);
+            }
+        }
+
+        // --- Event Listeners ---
+        loginButton.addEventListener('click', () => {
+            const id = loginIdInput.value;
+            const pass = loginPasswordInput.value;
+
+            if (id === loginId && pass === loginPassword) {
+                loginScreen.classList.add('hidden');
+                nameInputScreen.classList.remove('hidden');
+            } else {
+                showCustomAlert('Invalid ID or Password.');
+            }
+        });
+
+        startQuizButton.addEventListener('click', () => {
+            const name = candidateNameInput.value.trim();
+            if (name) {
+                userName = name;
+                nameInputScreen.classList.add('hidden');
+                quizScreen.classList.remove('hidden');
+                initializeQuizQuestions();
+                loadQuestion();
+                startTimer();
+            } else {
+                showCustomAlert('Please enter your full name to start the quiz.');
+            }
+        });
+
+        nextButton.addEventListener('click', goToNextQuestion);
+        prevButton.addEventListener('click', goToPrevQuestion);
+
+        retakeQuizButton.addEventListener('click', () => {
+            // Reset quiz state
+            currentQuestionIndex = 0;
+            score = 0;
+            attemptedQuestions = 0;
+            timeElapsed = 0;
+            userName = ''; // Clear username for a fresh start
+            loginIdInput.value = '';
+            loginPasswordInput.value = '';
+            candidateNameInput.value = '';
+
+            resultsScreen.classList.add('hidden');
+            loginScreen.classList.remove('hidden');
+            updateLiveDate(); // Update date for retake
+        });
+
+        // --- Initial Setup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLiveDate();
+        });
+
+    </script>
+</body>
+</html>
