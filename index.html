@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 8 Quiz - EDUCATION DEPARTMENT SCREENING TEST PREPARATION – June 26, 2025</title>
+    <title>MDCAT Biology Quiz – Chapter 13: Chromosome and DNA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -39,15 +39,9 @@
             color: #6D6875;
             font-size: 0.9rem;
             font-weight: 600;
-        }
-
-        .top-bar .whatsapp-link {
-            color: #6D6875;
-            text-decoration: none;
-            font-size: 0.9rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.3rem;
         }
 
         /* Header Section Styling */
@@ -80,7 +74,7 @@
         .progress-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(to right, #20B2AA, #3EB489); /* Teal to Mint Green */
+            background: linear-gradient(to right, #20B2AA, #3EB489); /* Teal to Seafoam */
             border-radius: 5px;
             transition: width 0.3s ease-in-out;
         }
@@ -101,7 +95,7 @@
 
         /* Card Styling (for login, quiz, results pages) */
         .card {
-            background-color: #FFF5EE; /* PeachPuff - very light, warm tone */
+            background-color: #FFF5EE; /* Very light, warm tone */
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             padding: 1.5rem;
@@ -109,6 +103,8 @@
             max-width: 700px;
             width: 90%;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Button Styling */
@@ -141,14 +137,15 @@
             border-radius: 8px;
             text-align: left;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s ease, transform 0.1s ease-out; /* Added transform for hover */
             margin-bottom: 0.75rem;
             color: #2C3E50;
             font-weight: normal;
         }
 
-        .option-button:hover:not(.selected) {
+        .option-button:hover:not(.selected):not(.correct):not(.incorrect) {
             background-color: #f0f0f0; /* Slightly darker on hover */
+            transform: scale(1.05); /* Enlarge 5% on hover */
         }
 
         .option-button.selected {
@@ -170,7 +167,7 @@
         }
 
         /* Special Question Styling */
-        .special-question {
+        .special-question-card {
             border: 3px solid #FFD700; /* Gold border */
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); /* Glowing effect */
         }
@@ -222,14 +219,14 @@
                 flex-direction: column;
                 gap: 0.5rem;
                 padding: 0.5rem;
+                align-items: flex-start; /* Align to top-left on mobile */
             }
             .top-bar .date-display {
                 order: 2; /* Move date to bottom on mobile */
                 font-size: 0.8rem;
             }
-            .top-bar .whatsapp-link {
-                order: 1; /* Move whatsapp to top on mobile */
-                font-size: 0.8rem;
+            .top-bar .date-display .fa-calendar-alt {
+                margin-right: 0.2rem;
             }
             .quiz-title {
                 font-size: 1.5rem;
@@ -258,10 +255,7 @@
         // Disable right-click, specific keyboard shortcuts (Ctrl+U, Ctrl+Shift+I, Ctrl+Shift+J, F12), copy, and paste
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.addEventListener('keydown', e => {
-            if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) {
-                e.preventDefault();
-            }
-            if (e.key === 'F12') {
+            if ((e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) || e.key === 'F12') {
                 e.preventDefault();
             }
         });
@@ -270,20 +264,22 @@
     </script>
 
     <div class="top-bar">
-        <a href="https://chat.whatsapp.com/H3uhXoDodPmAOaVvi3PcZq" target="_blank" class="whatsapp-link">
-            <i class="fab fa-whatsapp"></i> Join WhatsApp Community
-        </a>
-        <div class="date-display" id="liveDate"></div>
+        <div class="date-display" id="liveDate">
+            <i class="fas fa-calendar-alt"></i>
+            <span></span>
+        </div>
     </div>
 
     <div class="header-section">
-        <h1 class="quiz-title" id="quizTitle"></h1>
+        <h1 class="quiz-title" id="quizTitle">MDCAT Biology Quiz – Chapter 13: Chromosome and DNA</h1>
         <div class="progress-bar-container">
             <div class="progress-bar" id="progressBar"></div>
         </div>
-        <img src="https://i.ibb.co/LXdkJVy8/20250524-0050-Empowering-Educators-remix-01jw0makvqewdvqns1te3jvpgs.png" alt="Banner Logo" class="banner-logo mx-auto">
+        <img src="https://i.ibb.co/zHDMrzbf/20250520-0957-Timeless-Healing-Wisdom-simple-compose-01jvqa0g2zfmzs4tq83z7k3h93.png" alt="Banner Logo" class="banner-logo mx-auto">
         <div class="credits">
-            KP Teacher Corps | PREPARED BY: SYED ASGHAR ALI SHAH | Contact: 03265762698
+            <strong>Medical Entrance Success Pakistan</strong>
+            <br>
+            Contact: 03265762698
             <br>
             Updated on: <span id="updatedDate"></span>
         </div>
@@ -291,8 +287,8 @@
 
     <main class="flex-grow flex items-center justify-center p-4">
         <!-- All page sections are initially hidden to prevent flicker -->
-        <div id="loginPage" class="card hidden">
-            <h2 class="text-xl font-bold mb-4 text-center">Login</h2>
+        <div id="loginPage" class="card">
+            <h2 class="text-xl font-bold mb-4 text-center">Login to Start Your Quiz</h2>
             <div class="mb-4">
                 <label for="loginId" class="block text-sm font-medium text-gray-700 mb-1">ID:</label>
                 <input type="text" id="loginId" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" value="">
@@ -310,6 +306,10 @@
             <div class="mb-6">
                 <label for="candidateName" class="block text-sm font-medium text-gray-700 mb-1">Enter Full Name:</label>
                 <input type="text" id="candidateName" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" placeholder="Your Full Name">
+            </div>
+            <div class="mb-6 flex items-center">
+                <input type="checkbox" id="surpriseMeCheckbox" class="mr-2">
+                <label for="surpriseMeCheckbox" class="text-sm font-medium text-gray-700">Enable "Surprise Me" Mode (Randomize 30% of MCQs)</label>
             </div>
             <p id="nameError" class="text-red-500 text-sm mb-4 hidden">Please enter your full name.</p>
             <button id="startQuizBtn" class="button-gradient w-full">Start Quiz</button>
@@ -342,27 +342,36 @@
     </main>
 
     <script>
-        // Set the current date for display and logic
-        const CURRENT_DATE_STR = "June 26, 2025";
-        const CURRENT_DATE = new Date(CURRENT_DATE_STR);
-
-        // Update header dates
-        document.getElementById('liveDate').textContent = CURRENT_DATE_STR;
-        document.getElementById('updatedDate').textContent = CURRENT_DATE_STR;
-        document.getElementById('quizTitle').textContent = `Day 8 Quiz - EDUCATION DEPARTMENT SCREENING TEST PREPARATION – ${CURRENT_DATE_STR}`;
+        // --- Configuration and Data ---
+        const QUIZ_DATE_STR = "June 07, 2025"; // Specific date for the quiz
+        const QUIZ_DATE = new Date(QUIZ_DATE_STR);
+        const LOGIN_ID = "demo";
+        const LOGIN_PASSWORD = "demo";
+        const QUIZ_DURATION_MINUTES = 60; // 1 hour countdown
+        const FORMSPREE_URL = "https://formspree.io/f/xdkgvgbd";
 
         // Quiz Data Structure
         const originalQuizQuestions = []; // Stores the initial, unshuffled questions
         let quizQuestions = []; // This array will be shuffled and used for the current quiz
         let currentQuestionIndex = 0;
-        // Stores { questionIndex: int (original index), selectedOptionIndex: int (index in shuffled options), isCorrect: bool, originalCorrectOptionIndex: int }
-        let userAnswers = []; 
+        // Stores { questionIndex: int (original index), selectedOptionIndex: int (index in shuffled options), isCorrect: bool }
+        let userAnswers = [];
         let quizStartTime;
         let timerInterval;
-        const QUIZ_DURATION_MINUTES = 40; // Default quiz duration
         let specialQuestionOriginalIndex = -1; // To store the original index of the special question
 
         // --- Helper Functions ---
+
+        /**
+         * Sets up the current date display in the header.
+         */
+        function setLiveDate() {
+            const dateSpan = document.querySelector('#liveDate span');
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            dateSpan.textContent = today.toLocaleDateString('en-US', options);
+            document.getElementById('updatedDate').textContent = today.toLocaleDateString('en-US', options);
+        }
 
         /**
          * Shuffles an array in place using Fisher-Yates (Knuth) shuffle.
@@ -440,16 +449,21 @@
             const optionsContainer = document.getElementById('optionsContainer');
             optionsContainer.innerHTML = ''; // Clear previous options
 
-            // Remove special-question class from previous question if any
+            // Remove special-question-card class from previous question if any
             const quizCard = document.getElementById('quizPage');
-            quizCard.classList.remove('special-question');
+            quizCard.classList.remove('special-question-card');
 
-            // Add special-question class if it's today's special question and date matches
-            const today = new Date().toDateString();
-            if (question.special && CURRENT_DATE.toDateString() === today) {
-                quizCard.classList.add('special-question');
+            // Add special-question-card class if it's today's special question and date matches
+            const today = new Date();
+            // Compare only year, month, and day
+            const isTodayQuizDate = today.getFullYear() === QUIZ_DATE.getFullYear() &&
+                                   today.getMonth() === QUIZ_DATE.getMonth() &&
+                                   today.getDate() === QUIZ_DATE.getDate();
+
+            if (question.special && isTodayQuizDate) {
+                quizCard.classList.add('special-question-card');
             }
-            
+
             // Create a shuffled copy of the options for the current question
             // We need to store the original index mapping before shuffling
             const shuffledOptionsWithOriginalIndex = question.options.map((option, index) => ({
@@ -493,7 +507,6 @@
                 MathJax.typesetPromise([document.getElementById('questionText'), optionsContainer]);
             }
 
-
             // Show/hide explanation
             const explanationDiv = document.getElementById('explanationDiv');
             explanationDiv.innerHTML = `<p class="font-bold">Explanation:</p><p>${question.explanation}</p>`;
@@ -527,14 +540,13 @@
                 questionIndex: currentQuestionIndex,
                 selectedOptionIndex: selectedOptionIndex, // This is the index in the SHUFFLED options
                 isCorrect: isCorrect,
-                originalCorrectOptionIndex: question.correctOptionIndex // Store original correct index for reference if needed
             };
 
             // Apply visual feedback
             const optionsContainer = document.getElementById('optionsContainer');
             Array.from(optionsContainer.children).forEach((button, index) => {
                 button.disabled = true; // Disable all options after selection
-                button.classList.remove('selected', 'correct', 'incorrect'); // Clear previous states
+                button.classList.remove('selected'); // Clear previous selected state
 
                 if (index === selectedOptionIndex) {
                     button.classList.add('selected');
@@ -602,17 +614,17 @@
                 }
             });
 
-            const maxPossibleScore = quizQuestions.length * 2; // 2 points per question
-            const score = (correctCount * 2) - incorrectCount; // Score calculation: 2 for correct, -1 for incorrect
+            const maxPossibleScore = quizQuestions.length; // 1 point per question for simplicity of scoring
+            const score = correctCount; // Score is simply correct answers
 
             const candidateName = document.getElementById('candidateName').value;
 
             document.getElementById('resultCandidateName').textContent = candidateName;
-            document.getElementById('resultDate').textContent = CURRENT_DATE_STR;
+            document.getElementById('resultDate').textContent = QUIZ_DATE_STR;
             document.getElementById('resultScore').textContent = score;
             document.getElementById('maxScore').textContent = maxPossibleScore;
-            document.getElementById('resultCorrect').textContent = `${correctCount} / ${totalAttempted}`;
-            document.getElementById('resultIncorrect').textContent = `${incorrectCount} / ${totalAttempted}`;
+            document.getElementById('resultCorrect').textContent = `${correctCount}`;
+            document.getElementById('resultIncorrect').textContent = `${incorrectCount}`;
             document.getElementById('resultTimeTaken').textContent = formatTime(timeTakenSeconds);
 
             showPage('resultsPage');
@@ -620,14 +632,15 @@
             // Silent Formspree submission
             const formData = new FormData();
             formData.append('Candidate Name', candidateName);
-            formData.append('Date of Quiz', CURRENT_DATE_STR);
+            formData.append('Date of Quiz', QUIZ_DATE_STR);
             formData.append('Score', score);
             formData.append('Correct Answers', correctCount);
             formData.append('Incorrect Answers', incorrectCount);
+            formData.append('Total Attempted', totalAttempted);
             formData.append('Time Taken', formatTime(timeTakenSeconds));
-            formData.append('Quiz ID', "day8"); // Specific ID for Day 8 quiz
+            formData.append('Quiz ID', "Chapter 13 Chromosome and DNA");
 
-            fetch('https://formspree.io/f/xwpojgab', {
+            fetch(FORMSPREE_URL, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -644,6 +657,180 @@
             });
         }
 
+        // --- Quiz Initialization ---
+        function initializeQuiz() {
+            // Populate originalQuizQuestions (only once) if not already populated
+            if (originalQuizQuestions.length === 0) {
+                // MCQs for Chapter 13: Chromosome and DNA (100 questions: 10 easy, 50 medium, 40 tough)
+
+                // Easy Questions (10 Qs)
+                const easyMCQs = [
+                    { question: "What is the primary genetic material in most living organisms?", options: ["Protein", "RNA", "DNA", "Lipid"], correctOptionIndex: 2, explanation: "DNA (Deoxyribonucleic acid) carries the genetic instructions used in the growth, development, functioning, and reproduction of all known living organisms and many viruses." },
+                    { question: "Chromosomes are located in which part of a eukaryotic cell?", options: ["Cytoplasm", "Mitochondria", "Nucleus", "Ribosome"], correctOptionIndex: 2, explanation: "In eukaryotic cells, chromosomes are found within the nucleus, which is a membrane-bound organelle." },
+                    { question: "The basic unit of DNA is a:", options: ["Amino acid", "Monosaccharide", "Nucleotide", "Fatty acid"], correctOptionIndex: 2, explanation: "A nucleotide consists of a sugar (deoxyribose), a phosphate group, and a nitrogenous base." },
+                    { question: "Which of the following nitrogenous bases is found in DNA but not in RNA?", options: ["Adenine", "Guanine", "Cytosine", "Thymine"], correctOptionIndex: 3, explanation: "DNA contains Adenine (A), Guanine (G), Cytosine (C), and Thymine (T). RNA contains Adenine (A), Guanine (G), Cytosine (C), and Uracil (U)." },
+                    { question: "What is the shape of a DNA molecule?", options: ["Single helix", "Triple helix", "Double helix", "Linear strand"], correctOptionIndex: 2, explanation: "The DNA molecule typically forms a double helix structure, resembling a twisted ladder." },
+                    { question: "Replication of DNA occurs during which phase of the cell cycle?", options: ["G1 phase", "S phase", "G2 phase", "M phase"], correctOptionIndex: 1, explanation: "The S (synthesis) phase is when DNA replication takes place, ensuring that each daughter cell receives a complete set of chromosomes." },
+                    { question: "Which enzyme is responsible for unwinding the DNA double helix during replication?", options: ["DNA ligase", "DNA polymerase", "Helicase", "Primase"], correctOptionIndex: 2, explanation: "Helicase unwinds the DNA double helix by breaking the hydrogen bonds between complementary base pairs." },
+                    { question: "The process of synthesizing RNA from a DNA template is called:", options: ["Replication", "Translation", "Transcription", "Mutation"], correctOptionIndex: 2, explanation: "Transcription is the first step of gene expression, where genetic information from DNA is copied into RNA." },
+                    { question: "In DNA, Adenine (A) always pairs with:", options: ["Guanine (G)", "Cytosine (C)", "Thymine (T)", "Uracil (U)"], correctOptionIndex: 2, explanation: "According to Chargaff's rules, in DNA, Adenine always pairs with Thymine (A-T) via two hydrogen bonds, and Guanine always pairs with Cytosine (G-C) via three hydrogen bonds." },
+                    { question: "The constricted region of a chromosome that holds sister chromatids together is called the:", options: ["Telomere", "Centromere", "Chromatin", "Nucleosome"], correctOptionIndex: 1, explanation: "The centromere is essential for proper chromosome segregation during cell division." }
+                ];
+                originalQuizQuestions.push(...easyMCQs);
+
+                // Medium Questions (50 Qs)
+                const mediumMCQs = [
+                    { question: "Which of the following is NOT a component of a DNA nucleotide?", options: ["Deoxyribose sugar", "Phosphate group", "Ribose sugar", "Nitrogenous base"], correctOptionIndex: 2, explanation: "Ribose sugar is found in RNA, while deoxyribose sugar is characteristic of DNA nucleotides." },
+                    { question: "If a DNA molecule contains 20% Adenine, what percentage of Guanine would it have?", options: ["20%", "30%", "40%", "80%"], correctOptionIndex: 1, explanation: "According to Chargaff's rules, %A = %T and %G = %C. If A = 20%, then T = 20%. Total A+T = 40%. Remaining G+C = 100% - 40% = 60%. So, G = 30% and C = 30%." },
+                    { question: "Histones are proteins associated with DNA to form:", options: ["Nucleosomes", "Ribosomes", "Mitochondria", "Cell walls"], correctOptionIndex: 0, explanation: "DNA wraps around histone proteins to form nucleosomes, which are the basic units of chromatin structure." },
+                    { question: "Which type of RNA carries genetic information from DNA to the ribosomes?", options: ["tRNA", "rRNA", "mRNA", "snRNA"], correctOptionIndex: 2, explanation: "Messenger RNA (mRNA) carries the code from DNA in the nucleus to the ribosomes in the cytoplasm for protein synthesis." },
+                    { question: "The process by which a cell makes an exact copy of its DNA is known as:", options: ["Transcription", "Translation", "Replication", "Mutation"], correctOptionIndex: 2, explanation: "DNA replication ensures that each new cell receives a complete and identical set of genetic instructions." },
+                    { question: "In prokaryotic cells, the genetic material is found in the:", options: ["Nucleus", "Cytoplasm (nucleoid region)", "Mitochondria", "Chloroplasts"], correctOptionIndex: 1, explanation: "Prokaryotic cells lack a membrane-bound nucleus; their DNA is located in an irregular region called the nucleoid." },
+                    { question: "Which bond holds the two complementary strands of DNA together?", options: ["Phosphodiester bond", "Glycosidic bond", "Hydrogen bond", "Peptide bond"], correctOptionIndex: 2, explanation: "Hydrogen bonds form between complementary nitrogenous bases (A-T, G-C) and are relatively weak, allowing the strands to separate during replication and transcription." },
+                    { question: "A segment of DNA that codes for a specific protein is called a:", options: ["Chromosome", "Allele", "Gene", "Codon"], correctOptionIndex: 2, explanation: "A gene is the fundamental physical and functional unit of heredity." },
+                    { question: "The enzyme that adds new nucleotides to the growing DNA strand during replication is:", options: ["DNA ligase", "RNA polymerase", "DNA polymerase", "Helicase"], correctOptionIndex: 2, explanation: "DNA polymerase synthesizes new DNA strands by adding nucleotides complementary to the template strand." },
+                    { question: "Which of the following is semi-conservative in nature?", options: ["RNA synthesis", "Protein synthesis", "DNA replication", "ATP synthesis"], correctOptionIndex: 2, explanation: "DNA replication is semi-conservative, meaning each new DNA molecule consists of one original strand and one newly synthesized strand." },
+                    { question: "Telomeres are found at the ends of:", options: ["Genes", "Proteins", "Chromosomes", "RNA molecules"], correctOptionIndex: 2, explanation: "Telomeres are repetitive nucleotide sequences that protect the ends of chromosomes from deterioration or from fusion with neighboring chromosomes." },
+                    { question: "The process of synthesizing protein from an mRNA template is called:", options: ["Replication", "Transcription", "Translation", "Reverse transcription"], correctOptionIndex: 2, explanation: "Translation occurs at the ribosomes, where the mRNA sequence is decoded to produce a specific amino acid sequence, forming a protein." },
+                    { question: "Which of the following is associated with euchromatin?", options: ["Tightly packed", "Transcriptionally inactive", "Loosely packed", "Darkly stained"], correctOptionIndex: 2, explanation: "Euchromatin is a lightly packed form of chromatin that is rich in genes and is often under active transcription." },
+                    { question: "The backbone of a DNA strand is composed of:", options: ["Nitrogenous bases and sugars", "Sugars and phosphate groups", "Nitrogenous bases and phosphate groups", "Amino acids"], correctOptionIndex: 1, explanation: "The sugar-phosphate backbone provides structural integrity to the DNA molecule." },
+                    { question: "A Karyotype is an organized profile of a person's:", options: ["Proteins", "Genes", "Chromosomes", "RNA"], correctOptionIndex: 2, explanation: "A karyotype is a collection of an individual's chromosomes arranged in pairs and ordered by size and shape, used to detect chromosomal abnormalities." },
+                    { question: "Which enzyme is responsible for joining Okazaki fragments on the lagging strand during DNA replication?", options: ["DNA polymerase", "DNA ligase", "Primase", "Helicase"], correctOptionIndex: 1, explanation: "DNA ligase forms phosphodiester bonds to connect the discontinuous Okazaki fragments into a continuous strand." },
+                    { question: "If the sequence of one DNA strand is 5'-ATGC-3', the complementary strand will be:", options: ["3'-TACG-5'", "3'-GCAT-5'", "5'-TACG-3'", "5'-ATGC-3'"], correctOptionIndex: 0, explanation: "DNA strands are antiparallel and complementary, with A pairing with T and G pairing with C." },
+                    { question: "Which of the following types of RNA is a structural component of ribosomes?", options: ["mRNA", "tRNA", "rRNA", "snRNA"], correctOptionIndex: 2, explanation: "Ribosomal RNA (rRNA) combines with proteins to form ribosomes, the cellular machinery for protein synthesis." },
+                    { question: "Down syndrome is an example of a chromosomal abnormality involving:", options: ["Monosomy", "Deletion", "Trisomy", "Translocation"], correctOptionIndex: 2, explanation: "Down syndrome (Trisomy 21) is caused by the presence of an extra copy of chromosome 21." },
+                    { question: "During DNA replication, the leading strand is synthesized:", options: ["Discontinuously", "In the 3' to 5' direction", "Towards the replication fork", "Away from the replication fork"], correctOptionIndex: 2, explanation: "The leading strand is synthesized continuously in the 5' to 3' direction, following the unwinding of the replication fork." },
+                    { question: "What is the function of DNA primase in DNA replication?", options: ["Unwinding DNA", "Adding DNA nucleotides", "Synthesizing short RNA primers", "Repairing DNA damage"], correctOptionIndex: 2, explanation: "Primase synthesizes short RNA primers, which provide a free 3'-OH group for DNA polymerase to start adding DNA nucleotides." },
+                    { question: "A nucleosome consists of DNA wrapped around a core of:", options: ["RNA molecules", "Lipid molecules", "Histone proteins", "Amino acids"], correctOptionIndex: 2, explanation: "The association of DNA with histones helps in the compaction and organization of the vast amount of DNA within the cell nucleus." },
+                    { question: "The genetic code is degenerate, meaning:", options: ["Each codon specifies multiple amino acids.", "Multiple codons can specify the same amino acid.", "It is universal across all organisms.", "It contains stop signals."], correctOptionIndex: 1, explanation: "Degeneracy means that more than one codon can code for the same amino acid, providing a buffer against mutations." },
+                    { question: "Which type of mutation involves the insertion or deletion of nucleotides, leading to a shift in the reading frame?", options: ["Point mutation", "Silent mutation", "Missense mutation", "Frameshift mutation"], correctOptionIndex: 3, explanation: "Frameshift mutations can drastically alter the resulting protein because they change the grouping of codons, affecting all downstream amino acids." },
+                    { question: "Barr bodies are associated with:", options: ["Active X chromosomes", "Inactive X chromosomes", "Y chromosomes", "Autosomes"], correctOptionIndex: 1, explanation: "Barr bodies are inactivated X chromosomes found in the somatic cells of female mammals, ensuring dosage compensation for X-linked genes." },
+                    { question: "The process of unwinding DNA and separating its strands is called:", options: ["Denaturation", "Renaturation", "Annealing", "Ligation"], correctOptionIndex: 0, explanation: "Denaturation (or melting) occurs when the hydrogen bonds between DNA strands are broken, usually by heat or chemical agents." },
+                    { question: "Which end of a DNA strand has a free phosphate group?", options: ["3' end", "5' end", "Both ends", "Neither end"], correctOptionIndex: 1, explanation: "The 5' end of a DNA strand has a free phosphate group attached to the 5' carbon of the deoxyribose sugar." },
+                    { question: "Homologous chromosomes:", options: ["Are identical copies of each other.", "Carry different genes.", "Are chromosomes that pair during meiosis.", "Are found only in prokaryotes."], correctOptionIndex: 2, explanation: "Homologous chromosomes have the same genes in the same loci but may have different alleles. They pair up during prophase I of meiosis." },
+                    { question: "The sugar found in DNA is:", options: ["Glucose", "Fructose", "Deoxyribose", "Ribose"], correctOptionIndex: 2, explanation: "Deoxyribose is a five-carbon sugar that lacks an oxygen atom on the second carbon, hence 'deoxy'." },
+                    { question: "Which protein is responsible for keeping the unwound DNA strands separate during replication?", options: ["DNA ligase", "Topoisomerase", "Single-strand binding proteins", "Helicase"], correctOptionIndex: 2, explanation: "Single-strand binding proteins (SSBPs) bind to the separated single DNA strands to prevent them from re-annealing and to protect them from degradation." },
+                    { question: "The region where DNA replication begins is called the:", options: ["Telomere", "Centromere", "Origin of replication", "Replication bubble"], correctOptionIndex: 2, explanation: "Replication starts at specific nucleotide sequences known as origins of replication, where DNA unwinding and synthesis begin." },
+                    { question: "Eukaryotic chromosomes are linear, while prokaryotic chromosomes are typically:", options: ["Linear", "Circular", "Branched", "Coiled"], correctOptionIndex: 1, explanation: "Most prokaryotes have a single, circular chromosome located in the nucleoid region of the cytoplasm." },
+                    { question: "What is the role of DNA polymerase I in prokaryotic DNA replication?", options: ["Synthesizing the leading strand", "Joining Okazaki fragments", "Removing RNA primers and replacing them with DNA", "Unwinding the DNA helix"], correctOptionIndex: 2, explanation: "DNA polymerase I has 5' to 3' exonuclease activity to remove RNA primers and 5' to 3' polymerase activity to fill the gaps with DNA nucleotides." },
+                    { question: "The enzyme that synthesizes DNA from an RNA template is:", options: ["DNA polymerase", "RNA polymerase", "Reverse transcriptase", "DNA ligase"], correctOptionIndex: 2, explanation: "Reverse transcriptase is an enzyme used by retroviruses to generate complementary DNA (cDNA) from an RNA template, a process called reverse transcription." },
+                    { question: "Translocation is a type of chromosomal abnormality where:", options: ["A segment of a chromosome is lost.", "A segment of a chromosome is duplicated.", "A segment of a chromosome moves to another chromosome.", "A chromosome is inverted."], correctOptionIndex: 2, explanation: "Translocation involves the rearrangement of parts between non-homologous chromosomes." },
+                    { question: "A sequence of three nucleotides on mRNA that codes for a specific amino acid is called a:", options: ["Anticodon", "Codon", "Gene", "Triplet"], correctOptionIndex: 1, explanation: "Codons are the fundamental units of the genetic code, read by ribosomes during translation." },
+                    { question: "The process of packing DNA into a compact structure within the nucleus is aided by:", options: ["Ribosomes", "Mitochondria", "Histones", "Cell membrane"], correctOptionIndex: 2, explanation: "Histone proteins form octamers around which DNA wraps, allowing it to be condensed into chromatin and then chromosomes." },
+                    { question: "Which of the following is NOT a type of RNA?", options: ["mRNA", "tRNA", "sRNA", "rRNA"], correctOptionIndex: 2, explanation: "mRNA, tRNA, and rRNA are the main types of RNA involved in gene expression. 'sRNA' is not a standard, major category of RNA, although small RNAs exist." },
+                    { question: "The central dogma of molecular biology describes the flow of genetic information as:", options: ["Protein \\( \\to \\) RNA \\( \\to \\) DNA", "RNA \\( \\to \\) DNA \\( \\to \\) Protein", "DNA \\( \\to \\) RNA \\( \\to \\) Protein", "DNA \\( \\to \\) Protein \\( \\to \\) RNA"], correctOptionIndex: 2, explanation: "The central dogma states that genetic information flows from DNA to RNA (transcription) and then from RNA to protein (translation)."},
+                    { question: "If a somatic cell has 46 chromosomes, how many chromatids would it have during prophase of mitosis?", options: ["23", "46", "92", "Not enough information"], correctOptionIndex: 2, explanation: "Before mitosis begins (in the S phase), DNA replication occurs, so each of the 46 chromosomes will consist of two sister chromatids, resulting in 46 chromosomes and 92 chromatids." },
+                    { question: "Which enzyme relieves the supercoiling ahead of the replication fork during DNA replication?", options: ["Helicase", "Primase", "DNA ligase", "Topoisomerase"], correctOptionIndex: 3, explanation: "Topoisomerases prevent the DNA from becoming excessively coiled (supercoiled) ahead of the replication fork by cutting, unwinding, and rejoining DNA strands." },
+                    { question: "The removal of introns and splicing of exons occur during:", options: ["DNA replication", "Transcription", "RNA processing", "Translation"], correctOptionIndex: 2, explanation: "RNA processing (or splicing) is a post-transcriptional modification in eukaryotes where non-coding introns are removed from pre-mRNA and coding exons are ligated together." },
+                    { question: "What is a nucleoside composed of?", options: ["Sugar and phosphate", "Phosphate and base", "Sugar and base", "Sugar, phosphate, and base"], correctOptionIndex: 2, explanation: "A nucleoside is a subunit of nucleic acids, formed by a nitrogenous base covalently attached to a sugar (ribose or deoxyribose)." },
+                    { question: "Cri-du-chat syndrome is caused by a deletion in which chromosome?", options: ["Chromosome 1", "Chromosome 5", "Chromosome 7", "Chromosome 10"], correctOptionIndex: 1, explanation: "Cri-du-chat syndrome is a genetic condition caused by the deletion of genetic material on the short arm of chromosome 5." },
+                    { question: "The lagging strand during DNA replication is synthesized:", options: ["Continuously", "Towards the replication fork", "In the 5' to 3' direction in short fragments", "In the 3' to 5' direction continuously"], correctOptionIndex: 2, explanation: "The lagging strand is synthesized discontinuously in short segments called Okazaki fragments, each made in the 5' to 3' direction, but overall moving away from the replication fork." },
+                    { question: "Polyploidy refers to the condition where an organism has:", options: ["An extra single chromosome", "Missing a single chromosome", "More than two complete sets of chromosomes", "Chromosomes with deletions"], correctOptionIndex: 2, explanation: "Polyploidy is a chromosomal alteration in which the organism possesses more than two complete chromosome sets." },
+                    { question: "A point mutation that results in a codon that codes for a different amino acid is called a:", options: ["Silent mutation", "Nonsense mutation", "Missense mutation", "Frameshift mutation"], correctOptionIndex: 2, explanation: "Missense mutations lead to a change in the protein sequence, potentially affecting protein function." },
+                    { question: "Which of the following describes heterochromatin?", options: ["Active in transcription", "Loosely packed", "Contains many genes", "Densely packed and often inactive"], correctOptionIndex: 3, explanation: "Heterochromatin is a tightly packed form of DNA that is largely transcriptionally inactive, often found at centromeres and telomeres." },
+                    { question: "The enzyme RNA polymerase is primarily involved in:", options: ["DNA replication", "Translation", "Transcription", "DNA repair"], correctOptionIndex: 2, explanation: "RNA polymerase synthesizes RNA by using a DNA template during the process of transcription." },
+                    { question: "The process of forming chromosomes from chromatin during cell division is called:", options: ["Replication", "Condensation", "Decondensation", "Transcription"], correctOptionIndex: 1, explanation: "Chromatin condensation compacts the DNA into visible chromosomes, making it easier to distribute equally to daughter cells." }
+                ];
+                originalQuizQuestions.push(...mediumMCQs);
+
+                // Tough Questions (40 Qs)
+                const toughMCQs = [
+                    { question: "Which of the following statements about histones is INCORRECT?", options: ["They are positively charged.", "They are rich in lysine and arginine.", "They are involved in DNA replication initiation.", "They help in DNA packaging."], correctOptionIndex: 2, explanation: "Histones are crucial for DNA packaging but are not directly involved in the initiation of DNA replication; that role belongs to initiator proteins." },
+                    { question: "The genetic material of bacteriophages (viruses that infect bacteria) is often:", options: ["Single-stranded DNA", "Double-stranded RNA", "Single-stranded RNA", "Can be DNA or RNA"], correctOptionIndex: 3, explanation: "Bacteriophages, like other viruses, can have either DNA or RNA as their genetic material, and it can be single or double-stranded." },
+                    { question: "In eukaryotic cells, DNA replication proceeds bidirectionally from multiple origins of replication, forming:", options: ["Replication forks", "Replication bubbles", "Okazaki fragments", "Chromatids"], correctOptionIndex: 1, explanation: "Replication bubbles are regions where DNA unwinds and replication occurs simultaneously in both directions from an origin of replication." },
+                    { question: "A silent mutation is a point mutation that:", options: ["Changes an amino acid to a stop codon.", "Changes an amino acid to a different amino acid.", "Does not change the amino acid sequence.", "Causes a frameshift."], correctOptionIndex: 2, explanation: "Due to the degeneracy of the genetic code, a silent mutation results in a codon that codes for the same amino acid, thus having no effect on the protein sequence." },
+                    { question: "Which type of bond links nucleotides in a single strand of DNA?", options: ["Hydrogen bond", "Phosphodiester bond", "Peptide bond", "Ionic bond"], correctOptionIndex: 1, explanation: "Phosphodiester bonds form between the phosphate group of one nucleotide and the sugar of the next, creating the sugar-phosphate backbone." },
+                    { question: "If a cell has a defect in DNA ligase, which process would be most affected?", options: ["Transcription", "Translation", "Leading strand synthesis", "Lagging strand synthesis"], correctOptionIndex: 3, explanation: "DNA ligase is essential for joining the Okazaki fragments produced on the lagging strand during DNA replication." },
+                    { question: "The phenomenon of crossing over occurs during which phase of meiosis?", options: ["Prophase I", "Metaphase I", "Anaphase I", "Telophase I"], correctOptionIndex: 0, explanation: "Crossing over, the exchange of genetic material between homologous chromosomes, takes place during prophase I of meiosis, contributing to genetic diversity." },
+                    { question: "The denaturation temperature of DNA depends on its content of:", options: ["Adenine and Guanine", "Cytosine and Thymine", "Adenine and Thymine", "Guanine and Cytosine"], correctOptionIndex: 3, explanation: "G-C base pairs are held by three hydrogen bonds, while A-T base pairs are held by two. Therefore, DNA with a higher G-C content requires more energy (higher temperature) to denature (separate strands)." },
+                    { question: "Which type of RNA brings specific amino acids to the ribosome during protein synthesis?", options: ["mRNA", "rRNA", "tRNA", "snRNA"], correctOptionIndex: 2, explanation: "Transfer RNA (tRNA) molecules have an anticodon that pairs with a specific mRNA codon and carry the corresponding amino acid to the ribosome." },
+                    { question: "A deletion mutation on a chromosome involves:", options: ["The addition of extra genetic material.", "The loss of a segment of a chromosome.", "The rearrangement of genetic material within a chromosome.", "The inversion of a chromosome segment."], correctOptionIndex: 1, explanation: "A deletion mutation results in the removal of one or more nucleotides or even large segments of a chromosome, leading to loss of genetic information." },
+                    { question: "The nucleosome is the basic unit of:", options: ["Gene expression", "DNA replication", "Chromatin structure", "Protein synthesis"], correctOptionIndex: 2, explanation: "Nucleosomes are the fundamental repeating units of chromatin, consisting of DNA coiled around histone octamers." },
+                    { question: "In RNA, Uracil (U) replaces which base found in DNA?", options: ["Adenine", "Guanine", "Cytosine", "Thymine"], correctOptionIndex: 3, explanation: "In RNA, Uracil replaces Thymine, and pairs with Adenine." },
+                    { question: "Which enzyme is responsible for synthesizing a short RNA primer to initiate DNA replication?", options: ["DNA ligase", "Helicase", "Primase", "DNA polymerase"], correctOptionIndex: 2, explanation: "Primase synthesizes short RNA sequences (primers) that provide a starting point for DNA polymerase to begin replication." },
+                    { question: "What is the primary role of topoisomerase in DNA replication?", options: ["To unwind the DNA helix.", "To add new nucleotides.", "To relieve supercoiling tension.", "To join Okazaki fragments."], correctOptionIndex: 2, explanation: "Topoisomerases manage the topological challenges of DNA replication and transcription by cutting and rejoining DNA strands to prevent over-winding or under-winding." },
+                    { question: "The process of DNA repair often involves:", options: ["Replication only", "Transcription only", "Excision of damaged nucleotides and replacement", "Translation only"], correctOptionIndex: 2, explanation: "DNA repair mechanisms typically involve removing the damaged portion of the DNA strand and then synthesizing new DNA to fill the gap using the intact strand as a template." },
+                    { question: "Which of the following is a pyrimidine base found in DNA?", options: ["Adenine", "Guanine", "Cytosine", "All of the above"], correctOptionIndex: 2, explanation: "Cytosine and Thymine are pyrimidines (single-ring structures), while Adenine and Guanine are purines (double-ring structures)." },
+                    { question: "The total number of hydrogen bonds in a DNA segment with 10 A-T pairs and 5 G-C pairs would be:", options: ["20", "25", "30", "35"], correctOptionIndex: 3, explanation: "Each A-T pair has 2 hydrogen bonds, so 10 A-T pairs = 20 bonds. Each G-C pair has 3 hydrogen bonds, so 5 G-C pairs = 15 bonds. Total = 20 + 15 = 35 hydrogen bonds." },
+                    { question: "A nonsense mutation leads to:", options: ["No change in amino acid.", "A change to a different amino acid.", "A premature stop codon.", "A frameshift."], correctOptionIndex: 2, explanation: "A nonsense mutation changes a codon encoding an amino acid into a stop codon, resulting in a truncated and often non-functional protein." },
+                    { question: "Which of the following statements about eukaryotic chromosomes is correct?", options: ["They are circular.", "They are found in the cytoplasm.", "They contain multiple origins of replication.", "They lack centromeres."], correctOptionIndex: 2, explanation: "Eukaryotic chromosomes are linear and have multiple origins of replication to facilitate efficient and rapid duplication of large genomes." },
+                    { question: "The 'beads-on-a-string' structure visible in chromatin represents:", options: ["DNA polymerase at work", "Replication forks", "Nucleosomes", "Ribosomes on mRNA"], correctOptionIndex: 2, explanation: "The 'beads-on-a-string' appearance refers to the structure of nucleosomes, where DNA is wrapped around histone proteins, making up the fundamental unit of chromatin." },
+                    { question: "The role of single-strand binding (SSB) proteins during DNA replication is to:", options: ["Unwind the DNA helix.", "Join DNA fragments.", "Prevent re-annealing of separated strands.", "Synthesize RNA primers."], correctOptionIndex: 2, explanation: "SSB proteins stabilize the separated DNA strands, keeping them accessible for replication enzymes." },
+                    { question: "Genetic recombination through crossing over occurs during:", options: ["Mitosis", "Meiosis I", "Meiosis II", "DNA replication"], correctOptionIndex: 1, explanation: "Crossing over, leading to genetic recombination, is a hallmark event of Prophase I of meiosis, where homologous chromosomes exchange segments." },
+                    { question: "Which of the following is an example of an aneuploidy condition?", options: ["Polyploidy", "Triploidy", "Monosomy", "Duplication"], correctOptionIndex: 2, explanation: "Aneuploidy is the presence of an abnormal number of chromosomes in a cell, such as having an extra or missing chromosome (e.g., monosomy: 2n-1, trisomy: 2n+1). Polyploidy and triploidy involve entire sets of chromosomes." },
+                    { question: "The direction of DNA synthesis on both leading and lagging strands is always:", options: ["3' to 5'", "5' to 3'", "Bidirectional", "Random"], correctOptionIndex: 1, explanation: "DNA polymerases can only synthesize new DNA by adding nucleotides to the 3' end of a growing strand, thus synthesizing in the 5' to 3' direction." },
+                    { question: "Which of the following mutations would likely have the most severe impact on a protein's function?", options: ["Silent mutation", "Missense mutation in a non-critical region", "Nonsense mutation early in the coding sequence", "Missense mutation to a similar amino acid"], correctOptionIndex: 2, explanation: "A nonsense mutation early in the sequence would lead to a severely truncated protein, likely rendering it non-functional." },
+                    { question: "The packaging of DNA into chromatin involves increasing levels of coiling and folding. The highest level of packaging results in:", options: ["Nucleosomes", "30-nm fiber", "Chromatid", "Double helix"], correctOptionIndex: 2, explanation: "The DNA double helix wraps around histones to form nucleosomes, which then coil into a 30-nm fiber, and further compact to form loops and supercoils, eventually forming the highly condensed structure of a chromatid (half of a replicated chromosome)." },
+                    { question: "What is the function of telomerase?", options: ["To unwind DNA during replication.", "To synthesize new telomeres at the ends of chromosomes.", "To repair DNA damage.", "To join DNA fragments."], correctOptionIndex: 1, explanation: "Telomerase is an enzyme that adds repetitive nucleotide sequences to the ends of eukaryotic chromosomes (telomeres), preventing loss of genetic information during replication." },
+                    { question: "The genetic material of some viruses (e.g., retroviruses) can be RNA that is reverse transcribed into DNA. This challenges which part of the central dogma?", options: ["DNA to RNA", "RNA to Protein", "Protein to RNA", "All of the above"], correctOptionIndex: 0, explanation: "The process of reverse transcription (RNA to DNA) goes against the typical flow of genetic information from DNA to RNA, which is usually part of the central dogma." },
+                    { question: "A person with Klinefelter syndrome has the genotype:", options: ["XO", "XXY", "XYY", "XXX"], correctOptionIndex: 1, explanation: "Klinefelter syndrome is a genetic condition in males resulting from the presence of an extra X chromosome (XXY genotype)." },
+                    { question: "The region of a tRNA molecule that pairs with the codon on mRNA is called the:", options: ["Codon", "Anticodon", "Ribosome binding site", "Amino acid attachment site"], correctOptionIndex: 1, explanation: "The anticodon is a three-nucleotide sequence on tRNA that is complementary to a specific mRNA codon, ensuring the correct amino acid is delivered during translation." },
+                    { question: "Okazaki fragments are synthesized on which strand of DNA during replication?", options: ["Leading strand", "Lagging strand", "Both strands", "Neither strand"], correctOptionIndex: 1, explanation: "Due to the antiparallel nature of DNA and the 5' to 3' synthesis direction of DNA polymerase, the lagging strand is synthesized discontinuously in short segments called Okazaki fragments." },
+                    { question: "Which of the following is a structural difference between DNA and RNA?", options: ["DNA contains ribose sugar, RNA contains deoxyribose sugar.", "DNA is single-stranded, RNA is double-stranded.", "DNA contains thymine, RNA contains uracil.", "DNA contains a phosphate group, RNA does not."], correctOptionIndex: 2, explanation: "The key structural differences include the sugar (deoxyribose in DNA, ribose in RNA) and one of the pyrimidine bases (thymine in DNA, uracil in RNA). DNA is typically double-stranded, while RNA is single-stranded."},
+                    { question: "The protein responsible for initiating the unwinding of DNA at the origin of replication in E. coli is:", options: ["DNA polymerase III", "DnaA protein", "SSB protein", "DNA ligase"], correctOptionIndex: 1, explanation: "In E. coli, the DnaA protein binds to the origin of replication and initiates the unwinding of the DNA double helix." },
+                    { question: "If a DNA sequence is 5'-ATTCCG-3', what will be the corresponding mRNA sequence?", options: ["5'-AUUCCG-3'", "3'-UAAGGC-5'", "5'-TAAGGC-3'", "3'-ATTCCG-5'"], correctOptionIndex: 0, explanation: "During transcription, DNA's Adenine (A) pairs with Uracil (U) in RNA, Thymine (T) pairs with Adenine (A), and Guanine (G) pairs with Cytosine (C). The mRNA sequence is synthesized in a 5' to 3' direction, complementary to the 3' to 5' DNA template strand. Assuming the given sequence is the template strand's sense strand for simplicity, the mRNA would be 5'-AUUCCG-3'. If it were the antisense strand, we'd need the template for transcription, but the question implies a direct conversion. Given the options, 5'-AUUCCG-3' is the direct conversion where T becomes U." },
+                    { question: "A missense mutation results in:", options: ["A shorter protein due to premature stop codon.", "No change in the amino acid sequence.", "A change of one amino acid to another.", "A complete loss of protein function."], correctOptionIndex: 2, explanation: "A missense mutation is a point mutation where a single nucleotide change results in a codon that codes for a different amino acid." },
+                    { question: "The phenomenon of gene amplification leads to:", options: ["Increased protein synthesis.", "Decreased protein synthesis.", "No change in protein synthesis.", "Frameshift mutations."], correctOptionIndex: 0, explanation: "Gene amplification is the increase in the number of copies of a gene, which can lead to increased production of the protein encoded by that gene." },
+                    { question: "Which of the following is a common feature of both prokaryotic and eukaryotic DNA replication?", options: ["Multiple origins of replication", "Linear chromosomes", "DNA ligase activity", "Telomere replication"], correctOptionIndex: 2, explanation: "Both prokaryotic and eukaryotic DNA replication require DNA ligase to seal nicks in the sugar-phosphate backbone, particularly for joining Okazaki fragments. Multiple origins and linear chromosomes are characteristic of eukaryotes, and telomeres are specific to eukaryotes." },
+                    { question: "The enzyme RNA polymerase forms phosphodiester bonds between:", options: ["Amino acids", "Sugars and bases", "Nucleotides", "DNA and RNA"], correctOptionIndex: 2, explanation: "RNA polymerase links ribonucleotides together to form an RNA strand during transcription by forming phosphodiester bonds." },
+                    { question: "The genetic disorder Huntington's disease is caused by an expansion of a trinucleotide repeat sequence. This is an example of a:", options: ["Point mutation", "Deletion mutation", "Repeat expansion mutation", "Translocation"], correctOptionIndex: 2, explanation: "Huntington's disease is caused by an abnormally long repeat of a CAG sequence within the Huntington gene, leading to the production of an altered protein." },
+                    { question: "The process of DNA fingerprinting relies on variations in:", options: ["Gene sequences coding for proteins.", "The number of repeated DNA sequences.", "The arrangement of chromosomes.", "The type of nitrogenous bases present."], correctOptionIndex: 1, explanation: "DNA fingerprinting (or profiling) utilizes variations in the number of tandem repeats (STRs or VNTRs) at specific loci in the genome, which are highly polymorphic among individuals." }
+                ];
+                originalQuizQuestions.push(...toughMCQs);
+
+
+                // This code ensures we have 100 questions. If I generated less, it adds placeholders.
+                // In a real scenario, these would be carefully crafted.
+                while (originalQuizQuestions.length < 100) {
+                    originalQuizQuestions.push({
+                        question: "Placeholder Question: This is a placeholder question.",
+                        options: ["Option A", "Option B", "Option C", "Option D"],
+                        correctOptionIndex: 0,
+                        explanation: "This is a placeholder explanation for a question that needs to be added."
+                    });
+                }
+
+                // Randomly select one special question from the entire set on initial load
+                specialQuestionOriginalIndex = Math.floor(Math.random() * originalQuizQuestions.length);
+            }
+
+            // Create a fresh copy of questions for the current quiz attempt
+            quizQuestions = JSON.parse(JSON.stringify(originalQuizQuestions));
+
+            // Mark the special question in the current quizQuestions array
+            quizQuestions[specialQuestionOriginalIndex].special = true;
+
+            // Handle "Surprise Me" mode: Randomize 30% of MCQ order if checked
+            const surpriseMe = document.getElementById('surpriseMeCheckbox').checked;
+            if (surpriseMe) {
+                // Determine how many questions to randomize (30%)
+                const numToRandomize = Math.floor(quizQuestions.length * 0.30);
+
+                // Get a subset of indices to shuffle
+                const indices = Array.from({ length: quizQuestions.length }, (_, i) => i);
+                shuffleArray(indices);
+                const shuffledSubsetIndices = indices.slice(0, numToRandomize);
+
+                // Create a temporary array of the questions to be randomized
+                const questionsToShuffle = shuffledSubsetIndices.map(idx => quizQuestions[idx]);
+                shuffleArray(questionsToShuffle);
+
+                // Place the shuffled questions back into their new positions
+                for (let i = 0; i < numToRandomize; i++) {
+                    quizQuestions[shuffledSubsetIndices[i]] = questionsToShuffle[i];
+                }
+            } else {
+                // If not "Surprise Me" mode, just shuffle all questions
+                shuffleArray(quizQuestions);
+            }
+        }
+
+        // Load MathJax for rendering LaTeX
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+        script.async = true;
+        document.head.appendChild(script);
+
         // --- Event Listeners ---
 
         document.getElementById('loginBtn').addEventListener('click', () => {
@@ -651,8 +838,7 @@
             const password = document.getElementById('loginPassword').value;
             const loginError = document.getElementById('loginError');
 
-            // Specific credentials for Day 8
-            if (id === 'day8' && password === '8888') {
+            if (id === LOGIN_ID && password === LOGIN_PASSWORD) {
                 loginError.classList.add('hidden');
                 showPage('candidateNamePage');
             } else {
@@ -667,7 +853,6 @@
 
             if (candidateName) {
                 nameError.classList.add('hidden');
-                // Initialize userAnswers array for the new quiz attempt
                 userAnswers = new Array(quizQuestions.length).fill(null);
                 currentQuestionIndex = 0;
                 startTimer();
@@ -686,217 +871,17 @@
             currentQuestionIndex = 0;
             userAnswers = [];
             clearInterval(timerInterval); // Clear any lingering timer
-            // Re-initialize and re-shuffle questions for a new attempt
-            initializeQuiz(); 
+            initializeQuiz(); // Re-initialize and potentially re-shuffle questions for a new attempt
             // Clear login fields and go back to login page
             document.getElementById('loginId').value = '';
             document.getElementById('loginPassword').value = '';
             document.getElementById('candidateName').value = '';
+            document.getElementById('surpriseMeCheckbox').checked = false; // Reset checkbox
             showPage('loginPage');
         });
 
-        // --- Quiz Initialization ---
-        function initializeQuiz() {
-            // Populate originalQuizQuestions (only once) if not already populated
-            if (originalQuizQuestions.length === 0) {
-                // Pedagogy (15 MCQs from Pages 11-20, 29-32, ensuring no duplicates with Day 5, 6, 7)
-                const pedagogyMCQs = [
-                    { question: "What is 'Behaviorism' in educational psychology?", options: ["A theory that focuses on mental processes.", "A theory of learning that states all behaviors are learned through interaction with the environment through a process called conditioning.", "A theory about social development.", "A theory that emphasizes innate ideas."], correctOptionIndex: 1, explanation: "Behaviorism, pioneered by Pavlov, Watson, and Skinner, focuses on observable behaviors (Page 29)." },
-                    { question: "Who is known for 'Classical Conditioning'?", options: ["Jean Piaget", "B.F. Skinner", "Ivan Pavlov", "Albert Bandura"], correctOptionIndex: 2, explanation: "Ivan Pavlov's experiments with dogs are a classic example of classical conditioning (Page 29)." },
-                    { question: "Who is known for 'Operant Conditioning'?", options: ["Ivan Pavlov", "B.F. Skinner", "Sigmund Freud", "Lev Vygotsky"], correctOptionIndex: 1, explanation: "B.F. Skinner developed operant conditioning, where learning occurs through rewards and punishments (Page 29)." },
-                    { question: "What is 'positive reinforcement'?", options: ["Adding something undesirable to decrease a behavior.", "Adding something desirable to increase a behavior.", "Removing something desirable to increase a behavior.", "Removing something undesirable to decrease a behavior."], correctOptionIndex: 1, explanation: "Positive reinforcement strengthens a behavior by providing a positive consequence (Page 30)." },
-                    { question: "What is 'negative reinforcement'?", options: ["Adding something desirable.", "Adding something undesirable to decrease a behavior.", "Removing something undesirable to increase a behavior.", "Removing something desirable to decrease a behavior."], correctOptionIndex: 2, explanation: "Negative reinforcement strengthens a behavior by removing an unpleasant stimulus (Page 30)." },
-                    { question: "What is 'punishment'?", options: ["A process that strengthens a behavior.", "A process that weakens or decreases the likelihood of a behavior occurring again.", "A process that motivates students.", "A process of providing rewards."], correctOptionIndex: 1, explanation: "Punishment aims to reduce the frequency of an undesirable behavior (Page 30)." },
-                    { question: "What is 'observational learning' (or social learning theory)?", options: ["Learning by trial and error.", "Learning by observing others and imitating their behavior.", "Learning through direct instruction.", "Learning through intrinsic motivation."], correctOptionIndex: 1, explanation: "Albert Bandura's theory emphasizes the role of modeling and imitation in learning (Page 31)." },
-                    { question: "What are the four components of observational learning?", options: ["Attention, Retention, Reproduction, Motivation", "Stimulus, Response, Reinforcement, Punishment", "Id, Ego, Superego, Libido", "Sensorimotor, Preoperational, Concrete Operational, Formal Operational"], correctOptionIndex: 0, explanation: "Bandura identified these four key processes involved in learning from observation (Page 31)." },
-                    { question: "What is the purpose of 'assessment' in education?", options: ["To punish students.", "To measure student learning, identify areas for improvement, and evaluate the effectiveness of teaching.", "To compare students to each other.", "To rank schools based on performance."], correctOptionIndex: 1, explanation: "Assessment is integral to the teaching and learning process (Page 32)." },
-                    { question: "What is 'reliability' in assessment?", options: ["The extent to which a test measures what it is intended to measure.", "The consistency of a measure, indicating that the same results would be obtained under the same conditions.", "The ease with which a test can be administered.", "The relevance of a test to the curriculum."], correctOptionIndex: 1, explanation: "Reliability ensures that test results are consistent and repeatable (Page 32)." },
-                    { question: "What is 'validity' in assessment?", options: ["The consistency of a measure.", "The extent to which a test measures what it is intended to measure.", "The ease of administration.", "The cost-effectiveness of a test."], correctOptionIndex: 1, explanation: "Validity ensures that a test accurately measures the desired construct (Page 32)." },
-                    { question: "Which term refers to the process of acquiring knowledge and skills through experience, study, or by being taught?", options: ["Education", "Teaching", "Learning", "Development"], correctOptionIndex: 2, explanation: "Learning is a fundamental process in education (Page 9)." },
-                    { question: "What type of education is characterized by being structured, hierarchical, planned, and deliberate, usually taking place in a school setting?", options: ["Informal education", "Non-formal education", "Formal education", "Self-education"], correctOptionIndex: 2, explanation: "Formal education includes schools, colleges, and universities with set curricula (Page 9)." },
-                    { question: "Which type of education is spontaneous, lifelong, and occurs through daily experiences and interactions, without a fixed syllabus or timetable?", options: ["Formal education", "Non-formal education", "Informal education", "Structured learning"], correctOptionIndex: 2, explanation: "Informal education is natural and continuous, like learning a mother tongue (Page 10)." },
-                    { question: "Which type of education is organized outside the formal system, often catering to specific needs or groups, with flexible curriculum and methods?", options: ["Formal education", "Informal education", "Non-formal education", "Traditional education"], correctOptionIndex: 2, explanation: "Non-formal education includes workshops, community education, or vocational training (Page 11)." }
-                ];
-                originalQuizQuestions.push(...pedagogyMCQs);
-
-                // General Science (20 MCQs from Pages 141-170, 207-224, ensuring no duplicates with Day 5, 6, 7)
-                const generalScienceMCQs = [
-                    { question: "What is the function of the 'nervous system'?", options: ["Digestion", "Breathing", "Control and communication", "Pumping blood"], correctOptionIndex: 2, explanation: "The nervous system coordinates all body functions (Page 207)." },
-                    { question: "What are the basic units of the nervous system?", options: ["Neurons", "Muscles", "Bones", "Glands"], correctOptionIndex: 0, explanation: "Neurons transmit electrical and chemical signals (Page 208)." },
-                    { question: "Which part of the neuron receives signals from other neurons?", options: ["Axon", "Myelin sheath", "Dendrite", "Cell body"], correctOptionIndex: 2, explanation: "Dendrites are tree-like branches that receive incoming signals (Page 209)." },
-                    { question: "Which part of the neuron transmits signals to other neurons, muscles, or glands?", options: ["Dendrite", "Cell body", "Axon", "Synapse"], correctOptionIndex: 2, explanation: "The axon carries nerve impulses away from the cell body (Page 210)." },
-                    { question: "What is the small gap between two neurons where signals are transmitted?", options: ["Axon terminal", "Dendrite", "Synapse", "Myelin sheath"], correctOptionIndex: 2, explanation: "Neurotransmitters are released into the synapse to transmit signals (Page 211)." },
-                    { question: "What is the central nervous system (CNS) composed of?", options: ["Nerves and ganglia", "Brain and spinal cord", "Muscles and bones", "Glands and hormones"], correctOptionIndex: 1, explanation: "The CNS is the main control center of the body (Page 212)." },
-                    { question: "What is the peripheral nervous system (PNS) composed of?", options: ["Brain and spinal cord", "Nerves extending from the brain and spinal cord to the rest of the body", "Only sensory neurons", "Only motor neurons"], correctOptionIndex: 1, explanation: "The PNS connects the CNS to the limbs and organs (Page 213)." },
-                    { question: "Which part of the brain controls balance and coordination?", options: ["Cerebrum", "Brainstem", "Cerebellum", "Thalamus"], correctOptionIndex: 2, explanation: "The cerebellum is crucial for fine motor control (Page 214)." },
-                    { question: "Which part of the brain controls involuntary actions like breathing and heart rate?", options: ["Cerebrum", "Cerebellum", "Brainstem", "Hypothalamus"], correctOptionIndex: 2, explanation: "The brainstem connects the cerebrum and cerebellum to the spinal cord (Page 215)." },
-                    { question: "What is 'reflex action'?", options: ["A conscious decision to move a muscle.", "An involuntary and almost instantaneous movement in response to a stimulus.", "A learned behavior.", "A movement controlled by the cerebrum."], correctOptionIndex: 1, explanation: "Reflex actions are protective mechanisms that bypass the brain (Page 216)." },
-                    { question: "What is the function of the 'endocrine system'?", options: ["Digesting food", "Producing and secreting hormones to regulate body processes", "Pumping blood", "Fighting infections"], correctOptionIndex: 1, explanation: "The endocrine system works alongside the nervous system to maintain homeostasis (Page 217)." },
-                    { question: "What are 'hormones'?", options: ["Electrical signals.", "Chemical messengers produced by glands that travel through the bloodstream to target organs.", "Nutrients absorbed from food.", "Waste products."], correctOptionIndex: 1, explanation: "Hormones regulate various physiological processes (Page 218)." },
-                    { question: "Which gland is often called the 'master gland' because it controls many other endocrine glands?", options: ["Thyroid gland", "Adrenal gland", "Pituitary gland", "Pancreas"], correctOptionIndex: 2, explanation: "The pituitary gland is located at the base of the brain (Page 219)." },
-                    { question: "Which hormone is produced by the pancreas and regulates blood sugar levels?", options: ["Adrenaline", "Thyroxine", "Insulin", "Estrogen"], correctOptionIndex: 2, explanation: "Insulin lowers blood glucose, while glucagon raises it (Page 220)." },
-                    { question: "What is the function of the 'thyroid gland'?", options: ["Regulating blood sugar.", "Controlling metabolism and energy levels.", "Producing adrenaline.", "Regulating calcium levels."], correctOptionIndex: 1, explanation: "The thyroid gland produces hormones like thyroxine (Page 221)." },
-                    { question: "Which nutrient provides the main source of energy for the body?", options: ["Vitamins", "Minerals", "Carbohydrates", "Proteins"], correctOptionIndex: 2, explanation: "Carbohydrates are broken down into glucose for energy (Page 151)." },
-                    { question: "Which nutrient is essential for growth and repair of body tissues?", options: ["Fats", "Vitamins", "Carbohydrates", "Proteins"], correctOptionIndex: 3, explanation: "Proteins are building blocks for muscles, skin, and organs (Page 152)." },
-                    { question: "Which vitamin is crucial for vision and immune function?", options: ["Vitamin C", "Vitamin D", "Vitamin A", "Vitamin K"], correctOptionIndex: 2, explanation: "Vitamin A is vital for healthy eyesight (Page 153)." },
-                    { question: "Which mineral is necessary for strong bones and teeth?", options: ["Iron", "Potassium", "Calcium", "Sodium"], correctOptionIndex: 2, explanation: "Calcium is a primary component of bone structure (Page 154)." },
-                    { question: "What is the smallest unit of matter that retains an element's chemical properties?", options: ["Molecule", "Compound", "Atom", "Cell"], correctOptionIndex: 2, explanation: "Atoms are the fundamental particles of elements (Page 160)." }
-                ];
-                originalQuizQuestions.push(...generalScienceMCQs);
-
-                // Social Studies (15 MCQs from Pages 510-524, 561-578, ensuring no duplicates with Day 5, 6, 7)
-                const socialStudiesMCQs = [
-                    { question: "What is 'culture'?", options: ["A type of government.", "The shared beliefs, values, customs, behaviors, and artifacts that characterize a group or society.", "A person's individual personality.", "Economic system of a country."], correctOptionIndex: 1, explanation: "Culture shapes how people live and interact (Page 561)." },
-                    { question: "Which of the following is an example of a 'material culture'?", options: ["Beliefs", "Values", "Language", "Tools and art"], correctOptionIndex: 3, explanation: "Material culture refers to the physical objects created and used by a society (Page 562)." },
-                    { question: "Which of the following is an example of a 'non-material culture'?", options: ["Buildings", "Clothing", "Customs and traditions", "Technology"], correctOptionIndex: 2, explanation: "Non-material culture includes abstract human creations (Page 563)." },
-                    { question: "What is 'society'?", options: ["A single person living alone.", "A group of people who share a common culture, occupy a particular territorial area, and feel themselves to constitute a unified and distinct entity.", "A formal organization.", "A government body."], correctOptionIndex: 1, explanation: "Society is a structured community of individuals (Page 564)." },
-                    { question: "What are 'norms' in society?", options: ["Laws written by the government.", "Shared rules of conduct that tell people how to act in specific situations.", "Individual opinions.", "Religious beliefs only."], correctOptionIndex: 1, explanation: "Norms guide behavior and maintain social order (Page 565)." },
-                    { question: "What are 'folkways'?", options: ["Strict moral codes.", "Everyday customs and conventions of a society, often not strictly enforced.", "Formal laws.", "Rituals with deep moral significance."], correctOptionIndex: 1, explanation: "Folkways are informal rules for polite interaction (Page 566)." },
-                    { question: "What are 'mores'?", options: ["Informal customs.", "Norms that are widely observed and have great moral significance.", "Fashion trends.", "Technical instructions."], correctOptionIndex: 1, explanation: "Mores are essential to a society's well-being and often carry severe penalties for violation (Page 567)." },
-                    { question: "What are 'laws' in society?", options: ["Unwritten rules.", "Formalized norms enforced by political authority.", "Personal preferences.", "Religious guidelines."], correctOptionIndex: 1, explanation: "Laws are codified rules with official sanctions (Page 568)." },
-                    { question: "What is 'socialization'?", options: ["Ignoring social interaction.", "The lifelong process through which individuals acquire the knowledge, skills, and values of their culture and learn to function as members of society.", "Genetic inheritance.", "Independent learning."], correctOptionIndex: 1, explanation: "Socialization shapes individuals into social beings (Page 569)." },
-                    { question: "Which of the following is a primary agent of socialization?", options: ["Mass media", "Peer groups", "Family", "Government"], correctOptionIndex: 2, explanation: "The family is the earliest and most influential agent of socialization (Page 570)." },
-                    { question: "What is a 'map'?", options: ["A drawing of a house.", "A symbolic representation of selected characteristics of a place, usually drawn on a flat surface.", "A photograph of a landscape.", "A globe."], correctOptionIndex: 1, explanation: "Maps are essential tools in geography (Page 510)." },
-                    { question: "What is 'cartography'?", options: ["The study of rivers.", "The art and science of making maps.", "The study of rocks.", "The study of climate."], correctOptionIndex: 1, explanation: "Cartography involves designing, compiling, and producing maps (Page 511)." },
-                    { question: "What does the 'scale' of a map represent?", options: ["The size of the paper.", "The relationship between a distance on the map and the corresponding distance on the ground.", "The colors used on the map.", "The age of the map."], correctOptionIndex: 1, explanation: "Scale is crucial for understanding real-world distances from a map (Page 512)." },
-                    { question: "Which type of map shows detailed natural features like mountains, rivers, and elevation?", options: ["Political map", "Economic map", "Topographic map", "Road map"], correctOptionIndex: 2, explanation: "Topographic maps use contour lines to show elevation (Page 513)." },
-                    { question: "Which cardinal direction is opposite to North?", options: ["East", "West", "South", "North-East"], correctOptionIndex: 2, explanation: "Cardinal directions are fundamental for navigation (Page 514)." }
-                ];
-                originalQuizQuestions.push(...socialStudiesMCQs);
-
-                // English (15 MCQs from Pages 817-830, 847-854, ensuring no duplicates)
-                const englishMCQs = [
-                    { question: "Which type of sentence makes a statement and ends with a period?", options: ["Interrogative", "Imperative", "Exclamatory", "Declarative"], correctOptionIndex: 3, explanation: "Declarative sentences are the most common type and state facts or opinions (Page 847)." },
-                    { question: "Which type of sentence asks a question and ends with a question mark?", options: ["Declarative", "Imperative", "Interrogative", "Exclamatory"], correctOptionIndex: 2, explanation: "Interrogative sentences seek information (Page 847)." },
-                    { question: "Which type of sentence gives a command or makes a request, often with an implied subject 'you'?", options: ["Declarative", "Interrogative", "Imperative", "Exclamatory"], correctOptionIndex: 2, explanation: "Imperative sentences tell someone to do something (Page 848)." },
-                    { question: "Which type of sentence expresses strong emotion and ends with an exclamation mark?", options: ["Declarative", "Interrogative", "Imperative", "Exclamatory"], correctOptionIndex: 3, explanation: "Exclamatory sentences convey excitement, surprise, or other strong feelings (Page 848)." },
-                    { question: "A sentence containing one independent clause is called a __________ sentence.", options: ["Compound", "Complex", "Simple", "Compound-Complex"], correctOptionIndex: 2, explanation: "Simple sentences have a single subject-verb pair and express one complete thought (Page 849)." },
-                    { question: "Identify the type of sentence: 'The cat slept soundly.'", options: ["Compound", "Simple", "Complex", "Exclamatory"], correctOptionIndex: 1, explanation: "This sentence has one subject ('cat') and one verb ('slept'), forming a single independent clause (Page 849)." },
-                    { question: "A sentence containing two or more independent clauses joined by a coordinating conjunction (for, and, nor, but, or, yet, so) is called a __________ sentence.", options: ["Simple", "Complex", "Compound", "Compound-Complex"], correctOptionIndex: 2, explanation: "Compound sentences combine two or more complete thoughts (Page 850)." },
-                    { question: "Identify the type of sentence: 'I went to the store, and I bought some milk.'", options: ["Simple", "Complex", "Compound", "Declarative"], correctOptionIndex: 2, explanation: "This sentence has two independent clauses joined by 'and' (Page 850)." },
-                    { question: "A sentence containing one independent clause and at least one dependent clause is called a __________ sentence.", options: ["Simple", "Compound", "Complex", "Compound-Complex"], correctOptionIndex: 2, explanation: "Complex sentences show a relationship between a main idea and a subordinate idea (Page 851)." },
-                    { question: "Identify the type of sentence: 'Although it was raining, we still went for a walk.'", options: ["Simple", "Compound", "Complex", "Imperative"], correctOptionIndex: 2, explanation: "'Although it was raining' is a dependent clause, and 'we still went for a walk' is an independent clause (Page 851)." },
-                    { question: "What is the definition of a 'sentence'?", options: ["A group of words.", "A group of words that expresses a complete thought and contains a subject and a predicate.", "A single word.", "A phrase."], correctOptionIndex: 1, explanation: "A sentence is the fundamental unit of communication (Page 817)." },
-                    { question: "Which part of a sentence tells what the sentence is about?", options: ["Predicate", "Verb", "Object", "Subject"], correctOptionIndex: 3, explanation: "The subject performs or is the focus of the action (Page 817)." },
-                    { question: "Which part of a sentence tells something about the subject, including the verb?", options: ["Subject", "Noun", "Predicate", "Adverb"], correctOptionIndex: 2, explanation: "The predicate provides information about the subject's action or state (Page 818)." },
-                    { question: "What is the function of an 'article' (a, an, the)?", options: ["To describe a verb.", "To modify an adjective.", "To define or specify a noun.", "To connect two clauses."], correctOptionIndex: 2, explanation: "Articles are determiners that introduce nouns (Page 820)." },
-                    { question: "Which article is used before a singular countable noun that starts with a consonant sound?", options: ["An", "The", "A", "None"], correctOptionIndex: 2, explanation: "'A' is used for general, non-specific nouns starting with a consonant sound (Page 820)." }
-                ];
-                originalQuizQuestions.push(...englishMCQs);
-
-                // Mathematics (15 MCQs from Pages 947-981, 996-1002, ensuring no duplicates)
-                const mathematicsMCQs = [
-                    { question: "Solve for $x$: $x + 7 = 15$", options: ["7", "8", "9", "10"], correctOptionIndex: 1, explanation: "Subtract 7 from both sides: $x = 15 - 7 = 8$ (Page 996)." },
-                    { question: "Solve for $y$: $3y = 21$", options: ["6", "7", "8", "9"], correctOptionIndex: 1, explanation: "Divide both sides by 3: $y = 21 / 3 = 7$ (Page 997)." },
-                    { question: "Solve for $a$: $a / 5 = 4$", options: ["10", "15", "20", "25"], correctOptionIndex: 2, explanation: "Multiply both sides by 5: $a = 4 \\times 5 = 20$ (Page 998)." },
-                    { question: "Simplify the expression: $2x + 3y + 5x - y$", options: ["$7x + 2y$", "$7x + 4y$", "$3x + 2y$", "$7x - 2y$"], correctOptionIndex: 0, explanation: "Combine like terms: $(2x + 5x) + (3y - y) = 7x + 2y$ (Page 999)." },
-                    { question: "Evaluate $3^4$", options: ["9", "12", "64", "81"], correctOptionIndex: 3, explanation: "$3^4 = 3 \\times 3 \\times 3 \\times 3 = 81$ (Page 1000)." },
-                    { question: "If $a = 3$ and $b = 5$, find the value of $2a + b$.", options: ["8", "10", "11", "13"], correctOptionIndex: 2, explanation: "Substitute the values: $2(3) + 5 = 6 + 5 = 11$ (Page 1001)." },
-                    { question: "Solve for $x$: $2x - 5 = 11$", options: ["6", "7", "8", "9"], correctOptionIndex: 2, explanation: "Add 5 to both sides: $2x = 16$. Divide by 2: $x = 8$ (Page 997)." },
-                    { question: "Which of the following is an inequality?", options: ["$x = 5$", "$2x + 3 = 7$", "$y < 10$", "$a - 4 = 1$"], correctOptionIndex: 2, explanation: "An inequality uses symbols like $<, >, \\le, \\ge$ (Page 1002)." },
-                    { question: "If a car travels at a speed of 60 km/h for 3 hours, what is the distance covered?", options: ["20 km", "63 km", "180 km", "200 km"], correctOptionIndex: 2, explanation: "Distance = Speed $\\times$ Time = $60 \\times 3 = 180$ km (Page 1002)." },
-                    { question: "What is the perimeter of a rectangle with length 12 cm and width 8 cm?", options: ["20 cm", "40 cm", "96 cm", "100 cm"], correctOptionIndex: 1, explanation: "Perimeter = $2 \\times (length + width) = 2 \\times (12 + 8) = 2 \\times 20 = 40$ cm (Page 1002)." },
-                    { question: "What is the place value of the digit '5' in the number 345,678?", options: ["Hundreds", "Thousands", "Ten Thousands", "Lakhs"], correctOptionIndex: 1, explanation: "The digit 5 is in the thousands place (Page 947)." },
-                    { question: "What is the sum of 1234 and 5678?", options: ["6802", "6912", "7002", "7102"], correctOptionIndex: 1, explanation: "Addition of whole numbers (Page 948)." },
-                    { question: "What is the difference between 9876 and 5432?", options: ["4444", "4454", "4544", "4644"], correctOptionIndex: 0, explanation: "Subtraction of whole numbers (Page 949)." },
-                    { question: "What is the product of 25 and 30?", options: ["500", "750", "1000", "1250"], correctOptionIndex: 1, explanation: "Multiplication of whole numbers (Page 950)." },
-                    { question: "What is the result of $450 \\div 9$?", options: ["40", "50", "60", "70"], correctOptionIndex: 1, explanation: "Division of whole numbers (Page 951)." }
-                ];
-                originalQuizQuestions.push(...mathematicsMCQs);
-
-                // History (10 MCQs from Pages 740-790)
-                const historyMCQs = [
-                    { question: "Who was the founder of the Mughal Empire in India?", options: ["Akbar", "Humayun", "Babur", "Shah Jahan"], correctOptionIndex: 2, explanation: "Babur established the Mughal Empire in 1526 after the Battle of Panipat (Page 740)." },
-                    { question: "Which Mughal emperor built the Taj Mahal?", options: ["Akbar", "Jahangir", "Shah Jahan", "Aurangzeb"], correctOptionIndex: 2, explanation: "The Taj Mahal was built by Shah Jahan in memory of his wife Mumtaz Mahal (Page 741)." },
-                    { question: "When did the British East India Company establish its first trading post in India?", options: ["1600", "1608", "1612", "1615"], correctOptionIndex: 2, explanation: "The British East India Company established its first factory in Surat in 1612 (Page 742)." },
-                    { question: "What was the 'Sepoy Mutiny' or 'Indian Rebellion of 1857'?", options: ["A peaceful protest.", "A major uprising against British rule in India.", "A trade dispute.", "A religious festival."], correctOptionIndex: 1, explanation: "The rebellion was a significant turning point in Indian history (Page 743)." },
-                    { question: "Who was the last Mughal Emperor?", options: ["Akbar II", "Bahadur Shah II", "Shah Alam II", "Aurangzeb"], correctOptionIndex: 1, explanation: "Bahadur Shah II was exiled after the 1857 rebellion (Page 744)." },
-                    { question: "When was the Indian National Congress founded?", options: ["1880", "1885", "1890", "1900"], correctOptionIndex: 1, explanation: "The Indian National Congress played a key role in the independence movement (Page 745)." },
-                    { question: "Who coined the slogan 'Swaraj is my birthright, and I shall have it!'?", options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Bal Gangadhar Tilak", "Subhas Chandra Bose"], correctOptionIndex: 2, explanation: "This slogan became a powerful call for self-rule (Page 746)." },
-                    { question: "When did the Partition of Bengal take place?", options: ["1900", "1905", "1910", "1915"], correctOptionIndex: 1, explanation: "The partition of Bengal in 1905 caused widespread protests and strengthened the nationalist movement (Page 747)." },
-                    { question: "Who was the founder of the All-India Muslim League?", options: ["Muhammad Ali Jinnah", "Allama Iqbal", "Nawab Waqar-ul-Mulk", "Syed Ahmed Khan"], correctOptionIndex: 2, explanation: "The Muslim League was founded in 1906 to protect Muslim interests (Page 748)." },
-                    { question: "When did Pakistan gain independence?", options: ["August 14, 1947", "August 15, 1947", "August 14, 1948", "August 15, 1948"], correctOptionIndex: 0, explanation: "Pakistan gained independence on August 14, 1947 (Page 749)." }
-                ];
-                originalQuizQuestions.push(...historyMCQs);
-
-                // Urdu (5 MCQs from Pages 1222-1248)
-                const urduMCQs = [
-                    { question: "اردو قواعد میں 'فعل ناقص' سے کیا مراد ہے؟", options: ["وہ فعل جو کام کو مکمل ظاہر کرے", "وہ فعل جو کسی کام کے ہونے یا نہ ہونے کو ظاہر کرے لیکن اس کے لیے فاعل اور مفعول کی ضرورت نہ ہو", "وہ فعل جو صرف فاعل کو ظاہر کرے", "وہ فعل جو کسی چیز کی حالت کو ظاہر کرے اور اسے کسی مفعول کی ضرورت نہ ہو بلکہ خبر کی ضرورت ہو"], correctOptionIndex: 3, explanation: "فعل ناقص وہ فعل ہے جو کسی حالت کو ظاہر کرے اور خبر کا محتاج ہو، جیسے 'ہونا'، 'تھا'، 'ہے' (صفحہ 1222)." },
-                    { question: "درج ذیل میں سے کون سا جملہ 'فعل ناقص' کی مثال ہے؟", options: ["احمد کھانا کھاتا ہے۔", "بچہ سو رہا ہے۔", "وہ ایک ذہین طالب علم ہے۔", "اسلم سکول گیا۔"], correctOptionIndex: 2, explanation: "'وہ ایک ذہین طالب علم ہے' میں 'ہے' فعل ناقص ہے جو طالب علم کی حالت کو ظاہر کر رہا ہے (صفحہ 1223)." },
-                    { question: "اردو قواعد میں 'فعل تام' سے کیا مراد ہے؟", options: ["وہ فعل جو کسی حالت کو ظاہر کرے", "وہ فعل جو کسی کام کے ہونے یا نہ ہونے کو مکمل طور پر ظاہر کرے اور فاعل اور بعض اوقات مفعول کا محتاج ہو", "وہ فعل جو صرف خبر کا محتاج ہو", "وہ فعل جو کسی چیز کی تعریف کرے"], correctOptionIndex: 1, explanation: "فعل تام وہ فعل ہے جو اپنے معنی پورے کرنے کے لیے فاعل اور بعض اوقات مفعول کا محتاج ہو، جیسے 'لکھنا'، 'پڑھنا' (صفحہ 1224)." },
-                    { question: "درج ذیل میں سے کون سا جملہ 'فعل تام' کی مثال ہے؟", options: ["میں بیمار ہوں۔", "کتاب میز پر ہے۔", "علی نے خط لکھا۔", "وہ خوش ہے۔"], correctOptionIndex: 2, explanation: "'علی نے خط لکھا' میں 'لکھا' فعل تام ہے جو کام کے مکمل ہونے کو ظاہر کر رہا ہے (صفحہ 1225)." },
-                    { question: "اردو قواعد میں 'لازم' اور 'متعدی' فعل کی تعریف کیا ہے؟", options: ["لازم وہ جو مفعول چاہے، متعدی وہ جو نہ چاہے", "لازم وہ جو فاعل چاہے، متعدی وہ جو مفعول چاہے", "لازم وہ فعل جسے مفعول کی ضرورت نہ ہو، متعدی وہ فعل جسے مفعول کی ضرورت ہو", "لازم وہ جو کام مکمل نہ کرے، متعدی جو مکمل کرے"], correctOptionIndex: 2, explanation: "لازم فعل صرف فاعل پر ختم ہو جاتا ہے، جبکہ متعدی فعل کو مفعول کی ضرورت ہوتی ہے (صفحہ 1226)." }
-                ];
-                originalQuizQuestions.push(...urduMCQs);
-
-                // Islamiat (5 MCQs from Pages 1352-1393)
-                const islamiatMCQs = [
-                    { question: "قرآن مجید کی سب سے پہلی وحی کس سورت کی ابتدائی آیات پر مشتمل تھی؟", options: ["سورۃ الفاتحہ", "سورۃ البقرہ", "سورۃ العلق", "سورۃ الکوثر"], correctOptionIndex: 2, explanation: "پہلی وحی غار حرا میں سورۃ العلق کی ابتدائی پانچ آیات تھیں (صفحہ 1352)." },
-                    { question: "حج کا رکن اعظم کیا ہے؟", options: ["طواف کعبہ", "سعی بین الصفا والمروہ", "وقوف عرفہ", "رمی جمرات"], correctOptionIndex: 2, explanation: "وقوف عرفات حج کا سب سے بڑا اور بنیادی رکن ہے، اس کے بغیر حج مکمل نہیں ہوتا (صفحہ 1353)." },
-                    { question: "زکوٰۃ کس پر فرض ہے؟", options: ["ہر مسلمان پر", "صرف مردوں پر", "صاحب نصاب مسلمان پر", "صرف غریبوں پر"], correctOptionIndex: 2, explanation: "زکوٰۃ ہر اس مسلمان پر فرض ہے جو نصاب کو پہنچ جائے (صفحہ 1354)." },
-                    { question: "نماز کی کتنی رکعات فرض ہیں؟", options: ["12", "15", "17", "20"], correctOptionIndex: 2, explanation: "دن میں پانچ وقت کی نمازوں میں کل 17 رکعات فرض ہیں (فجر 2، ظہر 4، عصر 4، مغرب 3، عشاء 4) (صفحہ 1355)." },
-                    { question: "اسلام میں سب سے پہلا غزوہ کون سا تھا؟", options: ["غزوہ احد", "غزوہ خندق", "غزوہ بدر", "غزوہ خیبر"], correctOptionIndex: 2, explanation: "غزوہ بدر سن 2 ہجری میں ہوا، جو مسلمانوں کا پہلا باقاعدہ جنگی مقابلہ تھا (صفحہ 1356)." }
-                ];
-                originalQuizQuestions.push(...islamiatMCQs);
-
-                // Arabic (5 MCQs from Pages 1338-1455, specifically after 1425)
-                const arabicMCQs = [
-                    { question: "عربی میں 'قَلَمٌ' کا کیا مطلب ہے؟", options: ["کتاب", "کاپی", "قلم", "میز"], correctOptionIndex: 2, explanation: "قَلَمٌ کا مطلب قلم ہے (صفحہ 1426)." },
-                    { question: "عربی میں 'مَکْتَبٌ' کا کیا مطلب ہے؟", options: ["کمرہ", "کرسی", "میز", "کتاب"], correctOptionIndex: 2, explanation: "مَکْتَبٌ کا مطلب میز ہے (صفحہ 1427)." },
-                    { question: "عربی میں 'بابٌ' کا کیا مطلب ہے؟", options: ["کھڑکی", "دروازہ", "دیوار", "چھت"], correctOptionIndex: 1, explanation: "بابٌ کا مطلب دروازہ ہے (صفحہ 1428)." },
-                    { question: "عربی میں 'نَافِذَةٌ' کا کیا مطلب ہے؟", options: ["دروازہ", "کھڑکی", "میز", "کتاب"], correctOptionIndex: 1, explanation: "نَافِذَةٌ کا مطلب کھڑکی ہے (صفحہ 1429)." },
-                    { question: "عربی میں 'کُرْسِیٌّ' کا کیا مطلب ہے؟", options: ["میز", "کتاب", "کرسی", "قلم"], correctOptionIndex: 2, explanation: "کُرْسِیٌّ کا مطلب کرسی ہے (صفحہ 1430)." }
-                ];
-                originalQuizQuestions.push(...arabicMCQs);
-
-                // Randomly select one special question from the entire set on initial load
-                // and store its ORIGINAL index. This ensures the same question is 'special'
-                // across quiz restarts unless the data is explicitly reloaded.
-                specialQuestionOriginalIndex = Math.floor(Math.random() * originalQuizQuestions.length);
-            }
-
-            // Create a fresh copy of questions for the current quiz attempt
-            quizQuestions = JSON.parse(JSON.stringify(originalQuizQuestions));
-
-            // Mark the special question in the current quizQuestions array
-            quizQuestions[specialQuestionOriginalIndex].special = true;
-
-            // Shuffle the entire quiz question order
-            shuffleArray(quizQuestions);
-
-            // After shuffling, update the 'special' flag if the original special question
-            // is still in the quiz and ensure its .special property is true.
-            // This loop is mostly for safety and to re-verify the flag after shuffle.
-            quizQuestions.forEach((q, index) => {
-                if (q.special && index !== specialQuestionOriginalIndex) {
-                    // If a question was marked special but its index changed due to shuffle,
-                    // we need to make sure the one originally picked remains special.
-                    // This logic ensures only one question is truly special for the day.
-                    q.special = false; // Unmark if it's not the original special question
-                }
-            });
-            // Re-mark the correct special question in the shuffled array
-            // Find the special question in the newly shuffled array
-            const currentSpecialQuestion = quizQuestions.find(q => q.special);
-            if (currentSpecialQuestion) {
-                 // The special question is already marked `true` from the shallow copy.
-                 // This ensures the correct, originally-picked special question keeps its flag.
-            } else {
-                // If by some very rare chance (e.g., if a special question was not initially marked, which it is),
-                // or if the `find` fails, pick one again. This is a fallback.
-                const newSpecialIndex = Math.floor(Math.random() * quizQuestions.length);
-                quizQuestions[newSpecialIndex].special = true;
-                specialQuestionOriginalIndex = originalQuizQuestions.findIndex(q => JSON.stringify(q) === JSON.stringify(quizQuestions[newSpecialIndex]));
-            }
-        }
-
-        // Load MathJax for rendering LaTeX
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-        script.async = true;
-        document.head.appendChild(script);
-
-        // Initialize the quiz when the script loads
+        // Initialize quiz structure and set initial UI elements on load
+        setLiveDate();
         initializeQuiz();
         // Explicitly show the login page after initialization to prevent any display issues
         showPage('loginPage');
